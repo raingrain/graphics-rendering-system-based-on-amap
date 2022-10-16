@@ -87,8 +87,6 @@ function MapContainer() {
 
             initialControls();
 
-            console.log(map.getCenter());
-
             // 地图中心点centerMark标记
             map.add(new AMap.Marker({
                 position: map.getCenter()
