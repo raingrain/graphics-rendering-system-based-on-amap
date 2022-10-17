@@ -1,7 +1,7 @@
 import {AMap, map} from "../../component/MapContainer/MapContainer";
 import {LayersType} from "./LayersType";
 
-let Buildings: LayersType = null;
+export let Buildings: LayersType = null;
 
 export function setBuildingsLayer(isShow: boolean) {
     Buildings === null ? Buildings = new AMap.Buildings({
