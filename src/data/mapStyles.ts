@@ -4,47 +4,47 @@
 export const mapStyles = [
     {
         name: "标准",
-        style: "normal"
+        type: "normal"
     },
     {
         name: "幻影黑",
-        style: "dark"
+        type: "dark"
     },
     {
         name: "涂鸦",
-        style: "graffiti"
+        type: "graffiti"
     },
     {
         name: "月关银",
-        style: "light"
+        type: "light"
     },
     {
         name: "酱籽",
-        style: "wine"
+        type: "wine"
     },
     {
         name: "远山黛",
-        style: "whitesmoke"
+        type: "whitesmoke"
     },
     {
         name: "草色青",
-        style: "fresh"
+        type: "fresh"
     },
     {
         name: "雅士灰",
-        style: "grey"
+        type: "grey"
     },
     {
         name: "马卡龙",
-        style: "macaron"
+        type: "macaron"
     },
     {
         name: "靛青蓝",
-        style: "blue"
+        type: "blue"
     },
     {
         name: "极夜蓝",
-        style: "darkblue"
+        type: "darkblue"
     }
 ];
 
