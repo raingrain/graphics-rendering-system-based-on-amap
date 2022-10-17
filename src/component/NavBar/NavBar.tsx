@@ -2,7 +2,7 @@ import "./NavBar.scss";
 
 import {LeftCircleOutlined, GithubOutlined} from "@ant-design/icons";
 
-import {panel} from "../MapContainer/MapContainer.jsx";
+import {panel} from "../MapContainer/MapContainer";
 import {useRef} from "react";
 
 function NavBar() {
