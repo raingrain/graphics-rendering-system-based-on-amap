@@ -40,7 +40,7 @@ function NavBar() {
                 </svg>
             </div>
             <div className="github">
-                <a href="https://github.com/raingrain/react-amap" target="_blank">
+                <a href="https://github.com/raingrain/mini-amap-react-ts" target="_blank">
                     <GithubOutlined
                         style={{
                             fontSize: "2rem",
