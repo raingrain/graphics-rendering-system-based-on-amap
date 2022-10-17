@@ -4,10 +4,10 @@ import NavBar from "./component/NavBar/NavBar.jsx";
 function App() {
 
     return (
-        <div>
-            <NavBar/>
-            <MapContainer/>
-        </div>
+        <>
+            <NavBar />
+            <MapContainer />
+        </>
     );
 }
 
