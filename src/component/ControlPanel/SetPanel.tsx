@@ -1,6 +1,5 @@
 import {ChangeEvent} from "react";
 import {LayersType} from "../../utils/setLayers/LayersType";
-import "./ControlPanel.scss";
 
 export interface Info {
     name: string,
@@ -17,18 +16,18 @@ interface Props {
     defaultChecked: boolean | ((info: Info) => boolean)
 }
 
-function ControlPanel(props: Props) {
+function SetPanel(props: Props) {
 
     const {title, infos, inputType, handleChange, defaultChecked} = props;
 
     return (
-        <div className="grid grid-cols-2 gap-0.5">
+        <div className="grid grid-cols-2 gap-0.5 my-4">
             <h3 className="col-start-1 col-end-3 text-center">{title}</h3>
             {
                 infos.map((info, index, infos) =>
                     <label
                         key={info.name}
-                        className="flex flex-row items-center justify-around rounded-2xl m-2 cursor-pointer"
+                        className="mapPanel-labelAndButton flex flex-row items-center justify-around rounded-2xl m-2 cursor-pointer"
                     >
                         <input
                             type={inputType}
@@ -45,4 +44,4 @@ function ControlPanel(props: Props) {
     );
 }
 
-export {ControlPanel};
+export {SetPanel};
