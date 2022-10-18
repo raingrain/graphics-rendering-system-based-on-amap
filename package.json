@@ -12,6 +12,7 @@
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@amap/amap-jsapi-types": "^0.0.8",
     "@ant-design/icons": "^4.7.0",
+    "antd": "^4.23.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.55.0"
