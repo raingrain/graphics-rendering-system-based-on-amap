@@ -13,7 +13,7 @@ function TextToolbar() {
     function newText(content: string) {
         const text = new AMap.Text({
             map,
-            position: map.getCenter(),
+            position: [map.getCenter().getLng(), map.getCenter().getLat()],
             draggable: true,
             text: content,
             anchor: "center", // 设置文本标记锚点
