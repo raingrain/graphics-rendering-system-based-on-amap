@@ -1,6 +1,6 @@
-# [React-Amap](https://github.com/raingrain/react-amap/)
+# [Mini-AMap-React-TS](https://github.com/raingrain/mini-amap-react-ts)
 
-> A mini-amap written by ***[react](https://reactjs.org/)***, ***[amap](https://lbs.amap.com/)***, ***[sass](https://www.sasscss.com/)*** and ***[ant-design](https://ant.design/)***.
+> A Mini-AMap written by ***[ts](https://www.typescriptlang.org/)*** ***[react](https://reactjs.org/)***, ***[amap](https://lbs.amap.com/)***, ***[sass](https://www.sasscss.com/)***, ***[ant-design](https://ant.design/)***.
 
 ```
 $ npm install
