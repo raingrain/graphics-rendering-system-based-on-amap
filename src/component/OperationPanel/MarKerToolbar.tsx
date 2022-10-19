@@ -1,10 +1,10 @@
 import {AMap, map} from "../MapContainer/MapContainer";
 import {Collapse} from "antd";
 
-const { Panel } = Collapse;
+const {Panel} = Collapse;
 
 
-function EditMarKer() {
+function MarKerToolbar() {
 
     let markers: AMap.Marker[] = [];
 
@@ -59,35 +59,29 @@ function EditMarKer() {
     }
 
     return (
-        <Collapse>
-            <Panel header="设置点标注" key="1">
-                <div className="grid grid-cols-2 gap-0.5 my-4">
-                    <h3 className="col-start-1 col-end-3 text-center">设置点标记</h3>
-                    <label className="mapPanel-labelAndButton flex flex-row items-center justify-around rounded-2xl m-2 cursor-pointer">
-                        <input
-                            type="radio"
-                            name="editMarker"
-                            defaultChecked={false}
-                            onChange={startEditingMarker}
-                        />
-                        开始编辑
-                    </label>
-                    <label className="mapPanel-labelAndButton flex flex-row items-center justify-around rounded-2xl m-2 cursor-pointer">
-                        <input
-                            type="radio"
-                            name="editMarker"
-                            defaultChecked={true}
-                            onChange={stopEditingMarker}
-                        />
-                        停止编辑
-                    </label>
-                    <button onClick={removeAllMarker} className="mapPanel-labelAndButton col-start-1 col-end-3 rounded-2xl m-2 text-center">清除所有点标注
-                    </button>
-                </div>
-            </Panel>
-        </Collapse>
-
+        <div className="grid grid-cols-2 gap-0.5 my-4">
+            <label className="mapPanel-labelAndButton flex flex-row items-center justify-around rounded-2xl m-2 cursor-pointer">
+                <input
+                    type="radio"
+                    name="editMarker"
+                    defaultChecked={false}
+                    onChange={startEditingMarker}
+                />
+                开始编辑
+            </label>
+            <label className="mapPanel-labelAndButton flex flex-row items-center justify-around rounded-2xl m-2 cursor-pointer">
+                <input
+                    type="radio"
+                    name="editMarker"
+                    defaultChecked={true}
+                    onChange={stopEditingMarker}
+                />
+                停止编辑
+            </label>
+            <button onClick={removeAllMarker} className="mapPanel-labelAndButton col-start-1 col-end-3 rounded-2xl m-2 text-center">清除所有点标注
+            </button>
+        </div>
     );
 }
 
-export {EditMarKer};
+export {MarKerToolbar};
