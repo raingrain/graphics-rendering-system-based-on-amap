@@ -24,17 +24,17 @@ $ npm run dev
     - [x] **setting map features**
       - [x] background
       - [x] road
-      - [x] buliding
+      - [x] building
       - [x] point
     - [x] A panel for **setting map style** by radio
-    - [x] TextToolbar
-    - [x] MarkerToolbar
-    - [x] PolylineToolbar
-    - [ ] PolygonToolbar
-    - [ ] BezierCurveToolbar
-    - [ ] CircleToolbar
-    - [ ] EllipseToolbar
-    - [ ] RectangleToolbar
+    - [x] **TextToolbar**
+    - [x] **MarkerToolbar**
+    - [x] **PolylineToolbar**
+    - [ ] **PolygonToolbar**
+    - [ ] **BezierCurveToolbar**
+    - [ ] **CircleToolbar**
+    - [ ] **EllipseToolbar**
+    - [ ] **RectangleToolbar**
   - [x] A NavBar
     - [x] title
-    - [x] github's repository link 
+    - [x] GitHub's repository link 
