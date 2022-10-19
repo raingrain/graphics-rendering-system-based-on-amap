@@ -1,6 +1,6 @@
 # [Mini-AMap-React-TS](https://mini-amap-react-ts.vercel.app/)
 
-> A Mini-AMap-React-TS written by ***[ts](https://www.typescriptlang.org/)***, ***[react](https://reactjs.org/)***, ***[amap](https://lbs.amap.com/)***, ***[sass](https://www.sasscss.com/)***, ***[ant-design](https://ant.design/)***, ***[tailwindcss](https://tailwindcss.com/)***.
+> A Mini-AMap-React-TS written by ***[ts](https://www.typescriptlang.org/)***, ***[react](https://reactjs.org/)***, ***[AMap](https://lbs.amap.com/)***, ***[sass](https://sass-lang.com/)***, ***[ant-design](https://ant.design/)***, ***[tailwindcss](https://tailwindcss.com/)***.
 
 ```
 $ npm install
