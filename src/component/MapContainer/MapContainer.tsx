@@ -8,11 +8,9 @@ import {initialControls} from "../../utils/setControls";
 import {initialLayers} from "../../utils/setLayers";
 
 import "./MapContainer.scss";
-import {OperationPanel} from "../ControlPanels/OperationPanel";
+import {OperationPanel} from "../OperationPanel/OperationPanel";
 import {setRandomZoom} from "../../utils/setMapProperties/setRandomZoom";
 import {setRandomCenter} from "../../utils/setMapProperties/setRandomCenter";
-import {EditMarKer} from "../EditMarker/EditMarKer";
-import {EditText} from "../EditText/EditText";
 
 
 let panel: React.RefObject<HTMLDivElement>;
@@ -30,7 +28,6 @@ function MapContainer() {
     panel = useRef<HTMLDivElement>(null);
 
 
-
     // 只在初次挂载后渲染地图
     useEffect(() => {
         loadMap();
@@ -46,7 +43,7 @@ function MapContainer() {
             // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
             version: "2.0",
             // 需要使用的的控件列表，如比例尺'AMap.Scale'等
-            plugins: ["AMap.ControlBar", "AMap.ToolBar", "AMap.Scale", "AMap.HawkEye"]
+            plugins: ["AMap.ControlBar", "AMap.ToolBar", "AMap.Scale", "AMap.HawkEye", "AMap.PolylineEditor"]
         }).then((_AMap) => {
             AMap = _AMap;
             // 根据ID以及初始化配置对象加载地图
@@ -114,66 +111,34 @@ function MapContainer() {
             console.log("地图已加载");
         });
 
-        map.on('movestart', function  mapMovestart() {
-            mapMoveState.current!.innerText = "地图移动开始"
-            console.log('地图移动开始');
-        });
-        map.on('mapmove', function  mapMove() {
-            mapMoveState.current!.innerText = "地图正在移动"
-            console.log('地图正在移动');
-        });
+        map.on("movestart", () => mapMoveState.current!.innerText = "地图移动开始");
+        map.on("mapmove", () => mapMoveState.current!.innerText = "地图正在移动");
 
         map.on("moveend", function logCenter() {
-            mapMoveState.current!.innerText = "地图移动结束"
+            mapMoveState.current!.innerText = "地图移动结束";
             center.current!.innerText = `(${map.getCenter().lng.toFixed(6)}, ${map.getCenter().lat.toFixed(6)})`;
-            console.log("地图移动结束");
         });
 
-        map.on('zoomstart', function mapZoomStart() {
-            mapZoomState.current!.innerText = "地图缩放开始"
-            console.log('缩放开始');
-        });
-        map.on('zoomchange',function  mapZoom() {
-            mapZoomState.current!.innerText = "地图正在缩放"
-            console.log('正在缩放');
-        });
+        map.on("zoomstart", () => mapZoomState.current!.innerText = "地图缩放开始");
+        map.on("zoomchange", () => mapZoomState.current!.innerText = "地图正在缩放");
 
         map.on("zoomend", function logZoom() {
-            mapZoomState.current!.innerText = "地图缩放结束"
+            mapZoomState.current!.innerText = "地图缩放结束";
             zoom.current!.innerText = `${map.getZoom()}`;
-            console.log('缩放结束');
         });
 
-        map.on("click", function logLongitudeAndLatitudeOfMouse(e) {
-            mouseState.current!.innerText = "您单击了地图";
-            mouseLngLat.current!.innerText = `(${e.lnglat.getLng()}, ${e.lnglat.getLat()})`;
-        });
-        map.on("dbclick", function logLongitudeAndLatitudeOfMouse(e) {
-            mouseState.current!.innerText = "您双击了地图";
-            mouseLngLat.current!.innerText = `(${e.lnglat.getLng()}, ${e.lnglat.getLat()})`;
-        })
+        map.on("click", () => mouseState.current!.innerText = "您单击了地图");
+        map.on("dbclick", () => mouseState.current!.innerText = "您双击了地图");
 
-        map.on('mousemove', function showInfoMove() {
+        map.on("mousemove", function showInfoMove(e) {
             mouseState.current!.innerText = "您移动了鼠标";
-            console.log("您移动了您的鼠标！");
+            mouseLngLat.current!.innerText = `(${e.lnglat.getLng()}, ${e.lnglat.getLat()})`;
         });
 
-        map.on('rightclick', function showInfoMove() {
-            mouseState.current!.innerText = "您右键单击了地图";
-            console.log("您移动了您的鼠标！");
-        });
-        map.on('dragstart', function showInfoDragstart() {
-            mapDragState.current!.innerText = "开始拖拽地图";
-            console.log("开始拖拽地图");
-        });
-        map.on('dragging', function showInfoDragging() {
-            mapDragState.current!.innerText = "正在拖拽地图";
-            console.log("正在拖拽地图");
-        });
-        map.on('dragend', function showInfoDragend() {
-            mapDragState.current!.innerText = "停止拖拽地图";
-            console.log("停止拖拽地图");
-        });
+        map.on("rightclick", () => mouseState.current!.innerText = "您右键单击了地图");
+        map.on("dragstart", () => mapDragState.current!.innerText = "开始拖拽地图");
+        map.on("dragging", () => mapDragState.current!.innerText = "正在拖拽地图");
+        map.on("dragend", () => mapDragState.current!.innerText = "停止拖拽地图");
     }
 
 
@@ -199,8 +164,6 @@ function MapContainer() {
                 <button className="mapPanel-labelAndButton rounded-2xl m-2" onClick={setRandomZoom}>随机设置地图层级</button>
                 {/*地图中心设置按钮*/}
                 <button className="mapPanel-labelAndButton rounded-2xl m-2" onClick={setRandomCenter}>随机设置地图中心点</button>
-                <EditText/>
-                <EditMarKer/>
                 <OperationPanel />
             </div>
         </div>
