@@ -8,7 +8,6 @@ export interface Info {
 }
 
 interface Props {
-    title: string,
     infos: Info[],
     inputType: "radio" | "checkbox",
     inputName?: string
@@ -18,11 +17,10 @@ interface Props {
 
 function SetPanel(props: Props) {
 
-    const {title, infos, inputType, handleChange, defaultChecked} = props;
+    const {infos, inputType, handleChange, defaultChecked} = props;
 
     return (
         <div className="grid grid-cols-2 gap-0.5 my-4">
-            <h3 className="col-start-1 col-end-3 text-center">{title}</h3>
             {
                 infos.map((info, index, infos) =>
                     <label
