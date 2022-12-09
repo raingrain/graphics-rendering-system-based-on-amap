@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import "@amap/amap-jsapi-types";
 
-import {mapFeatures} from "./MapToolbar/MapFeaturesTool";
+import {features} from "./MapToolbar/GaoDeFeaturesTool";
 
 // import {OperationPanel} from "./OperationPanel/OperationPanel";
 
@@ -22,7 +22,7 @@ let map: AMap.Map;
 
 const MapScreen = observer(() => {
 
-    const {mapInfos, mapLayers, mapControls, pointLayer} = useStore();
+    const {mapInfos, gaoDeLayers, gaoDeControls, pointLayer} = useStore();
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -62,7 +62,7 @@ const MapScreen = observer(() => {
                 // 是否监控地图容器尺寸变化
                 resizeEnable: true,
                 // 地图显示要素
-                features: mapFeatures.map((feature) => feature.type),
+                features: features.map((feature) => feature.type),
                 // 初始化地图样式
                 mapStyle: "amap://styles/blue",
                 // 是否显示文字标记
@@ -71,9 +71,9 @@ const MapScreen = observer(() => {
 
             mapInfos.addMapInfosListener();
 
-            mapLayers.initialLayers();
+            gaoDeLayers.initialLayers();
 
-            mapControls.initialControls();
+            gaoDeControls.initialControls();
 
             // 地图中心点centerMark标记
             map.add(new AMap.Marker({

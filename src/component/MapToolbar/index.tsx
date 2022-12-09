@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {MapFeaturesTool} from "./MapFeaturesTool";
-import {MapLayerTool} from "./MapLayerTool";
+import {GaoDeFeaturesTool} from "./GaoDeFeaturesTool";
+import {GaoDeLayerTool} from "./GaoDeLayerTool";
 import {MapStyleTool} from "./MapStyleTool";
 import {PointTool} from "./PointTool";
 import {ClearTool} from "./ClearTool";
@@ -19,8 +19,8 @@ export const MapToolbar = () => {
             <PolygonTool/>
             <PolylineTool/>
             <PointTool />
-            <MapFeaturesTool />
-            <MapLayerTool />
+            <GaoDeFeaturesTool />
+            <GaoDeLayerTool />
             <MapStyleTool />
         </div>
     );

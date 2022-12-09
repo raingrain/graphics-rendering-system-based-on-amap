@@ -1,5 +1,5 @@
 // 地图要素类型
-export interface MapFeatureObjectType {
+export interface Feature {
     zhName: string,
     type: string,
     isLoad: boolean

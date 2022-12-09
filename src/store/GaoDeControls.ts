@@ -4,7 +4,7 @@ import {AMap, map} from "../component/MapScreen";
 // 控件类型，初始化为null
 type ControlType = AMap.Control | null;
 
-class MapControls {
+class GaoDeControls {
     controlBar: ControlType = null;
     toolBar: ControlType = null;
     scale: ControlType = null;
@@ -85,4 +85,4 @@ class MapControls {
     }
 }
 
-export const mapControls = new MapControls();
+export const gaoDeControls = new GaoDeControls();

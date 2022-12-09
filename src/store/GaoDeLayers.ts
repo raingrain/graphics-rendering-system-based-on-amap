@@ -2,19 +2,19 @@ import {makeAutoObservable} from "mobx";
 import {AMap} from "../component/MapScreen";
 
 // 单个图层的类型，初始化为null
-type LayerType = AMap.TileLayer | AMap.BuildingLayer | null;
+type Layer = AMap.TileLayer | AMap.BuildingLayer | null;
 
-class MapLayers {
+class GaoDeLayers {
     // 卫星图层
-    satellite: LayerType = null;
+    satellite: Layer = null;
     // 路网图层
-    roadNet: LayerType = null;
+    roadNet: Layer = null;
     // 路况图层
-    traffic: LayerType = null;
+    traffic: Layer = null;
     // 楼块图层
-    buildings: LayerType = null;
+    buildings: Layer = null;
     // 图层数据
-    layersData = [
+    layers = [
         {
             zhName: "卫星图层",
             type: this.satellite
@@ -77,4 +77,4 @@ class MapLayers {
     }
 }
 
-export const mapLayers = new MapLayers();
+export const gaoDeLayers = new GaoDeLayers();

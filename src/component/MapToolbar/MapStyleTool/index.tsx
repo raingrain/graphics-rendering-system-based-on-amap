@@ -9,7 +9,7 @@ import {Popover} from "antd";
 import styled from "styled-components";
 
 // 样式类类型
-import {MapStyleObjectType} from "./types";
+import {Style} from "./types";
 
 // 导入样式对应图片，不能以src直接插入image标签（大坑）
 // @ts-ignore
@@ -42,7 +42,7 @@ import {ControlButton} from "../index";
 // name为样式中文名字
 // type为样式类型英文名字
 // image为图像
-const mapStyles: MapStyleObjectType[] = [
+const styles: Style[] = [
     {
         zhName: "标准",
         type: "normal",
@@ -126,7 +126,7 @@ const PopoverTitle = () => {
 // 气泡卡片内容
 const PopoverContent = () => {
 
-    const {mapControls} = useStore();
+    const {gaoDeControls} = useStore();
 
     // 设置地图样式
     function setStyle(styleType: string) {
@@ -135,14 +135,14 @@ const PopoverContent = () => {
         // 往map实例上添加样式
         map.setMapStyle(styleType);
         // 同时设置鹰眼控件
-        // setControl("HawkEye", {mapStyle: "amap://styles/" + mapStyle.style});
-        mapControls.setHawkEye({mapStyle: styleType});
+        // setControl("HawkEye", {mapStyle: "amap://styles/" + mapStyle.Style});
+        gaoDeControls.setHawkEye({mapStyle: styleType});
     }
 
     return (
         <Content>
             {
-                mapStyles.map((style) => {
+                styles.map((style) => {
                     return (
                         <div key={style.zhName} onClick={() => setStyle(style.type)}>
                             <img src={style.image} alt={style.zhName} />

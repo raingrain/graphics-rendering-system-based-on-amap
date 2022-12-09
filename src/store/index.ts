@@ -1,16 +1,16 @@
 import {createContext, useContext} from "react";
 
 import {mapInfos} from "./MapInfos";
-import {mapControls} from "./MapControls";
-import {mapLayers} from "./MapLayers";
+import {gaoDeControls} from "./GaoDeControls";
+import {gaoDeLayers} from "./GaoDeLayers";
 import {pointLayer} from "./PointLayer";
 import {polylineLayer} from "./PolylineLayer";
 import {polygonLayer} from "./PolygonLayer";
 
 class Store {
     mapInfos = mapInfos;
-    mapControls = mapControls;
-    mapLayers = mapLayers;
+    gaoDeControls = gaoDeControls;
+    gaoDeLayers = gaoDeLayers;
     pointLayer = pointLayer;
     polylineLayer = polylineLayer;
     polygonLayer = polygonLayer;

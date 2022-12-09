@@ -1,6 +1,5 @@
-import {autorun, makeAutoObservable} from "mobx";
+import {makeAutoObservable} from "mobx";
 import {map} from "../component/MapScreen";
-import {pointLayer} from "./PointLayer";
 
 class MapInfos {
     isEditing = false;

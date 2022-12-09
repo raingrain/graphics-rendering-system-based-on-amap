@@ -2,7 +2,7 @@
 import {ChangeEvent} from "react";
 
 // 样式按钮图标
-import {MapLayerToolIcon} from "../../../assets/Icon";
+import {GaoDeLayerToolIcon} from "../../../assets/Icon";
 // 导入气泡卡片控件
 import {Popover} from "antd";
 import styled from "styled-components";
@@ -13,7 +13,7 @@ import {map} from "../../MapScreen";
 import {ControlButton} from "../index";
 
 
-export const MapLayerTool = () => {
+export const GaoDeLayerTool = () => {
     return (
         <div>
             <Popover
@@ -22,7 +22,7 @@ export const MapLayerTool = () => {
                 title={<PopoverTitle />}
                 trigger="click"
             >
-                <ControlButton><MapLayerToolIcon size="24" /></ControlButton>
+                <ControlButton><GaoDeLayerToolIcon size="24" /></ControlButton>
             </Popover>
         </div>
     );
@@ -37,23 +37,23 @@ const PopoverTitle = () => {
 // 气泡卡片内容
 const PopoverContent = () => {
 
-    const {mapLayers} = useStore();
+    const {gaoDeLayers} = useStore();
 
     function handleChange(e: ChangeEvent<HTMLInputElement>, layerZhName: string) {
         switch (layerZhName) {
             case "卫星图层":
-                e.target.checked ? map.addLayer(mapLayers.satellite!) : map.removeLayer(mapLayers.satellite!);
+                e.target.checked ? map.addLayer(gaoDeLayers.satellite!) : map.removeLayer(gaoDeLayers.satellite!);
                 break;
             case "路网图层":
-                e.target.checked ? map.addLayer(mapLayers.roadNet!) : map.removeLayer(mapLayers.roadNet!);
+                e.target.checked ? map.addLayer(gaoDeLayers.roadNet!) : map.removeLayer(gaoDeLayers.roadNet!);
                 // setRoadNetLayer(e.target.checked);
                 break;
             case "路况图层":
-                e.target.checked ? map.addLayer(mapLayers.traffic!) : map.removeLayer(mapLayers.traffic!);
+                e.target.checked ? map.addLayer(gaoDeLayers.traffic!) : map.removeLayer(gaoDeLayers.traffic!);
                 // setTrafficLayer(e.target.checked);
                 break;
             case "楼块图层":
-                e.target.checked ? map.addLayer(mapLayers.buildings!) : map.removeLayer(mapLayers.buildings!);
+                e.target.checked ? map.addLayer(gaoDeLayers.buildings!) : map.removeLayer(gaoDeLayers.buildings!);
                 // setBuildingsLayer(e.target.checked);
                 break;
         }
@@ -63,7 +63,7 @@ const PopoverContent = () => {
     return (
         <Content>
             {
-                mapLayers.layersData.map((layer) => {
+                gaoDeLayers.layers.map((layer) => {
                     return (
                         <label key={layer.zhName}>
                             <input

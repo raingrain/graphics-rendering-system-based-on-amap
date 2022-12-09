@@ -1,5 +1,5 @@
 // 样式按钮图标
-import {MapFeaturesToolIcon} from "../../../assets/Icon";
+import {GaoDeFeaturesToolIcon} from "../../../assets/Icon";
 // 导入气泡卡片控件
 import {Popover} from "antd";
 import styled from "styled-components";
@@ -10,11 +10,11 @@ import {ChangeEvent} from "react";
 // 地图实例
 import {map} from "../../MapScreen";
 // 要素类类型
-import {MapFeatureObjectType} from "./types";
+import {Feature} from "./types";
 import {ControlButton} from "../index";
 
 // 地图要素及其对应的中文名
-export const mapFeatures: MapFeatureObjectType[] = [
+export const features: Feature[] = [
     {
         zhName: "区域面",
         type: "bg",
@@ -37,7 +37,7 @@ export const mapFeatures: MapFeatureObjectType[] = [
     }
 ];
 
-export const MapFeaturesTool = () => {
+export const GaoDeFeaturesTool = () => {
     return (
         <div>
             <Popover
@@ -46,7 +46,7 @@ export const MapFeaturesTool = () => {
                 title={<PopoverTitle />}
                 trigger="click"
             >
-                <ControlButton><MapFeaturesToolIcon size="24" /></ControlButton>
+                <ControlButton><GaoDeFeaturesToolIcon size="24" /></ControlButton>
             </Popover>
         </div>
     );
@@ -61,7 +61,7 @@ const PopoverTitle = () => {
 // 气泡卡片内容
 const PopoverContent = () => {
 
-    function handleChange(e: ChangeEvent<HTMLInputElement>, feature: MapFeatureObjectType) {
+    function handleChange(e: ChangeEvent<HTMLInputElement>, feature: Feature) {
         if (e.target.checked && !feature.isLoad) {
             // 如果该复选框是被选中的，且mapFeatures中没有这个要素，就往mapFeatures中加这个数据
             feature.isLoad = true;
@@ -71,19 +71,19 @@ const PopoverContent = () => {
         }
         // 往map实例中添加要显示的要素
         const curMapFeatures = [];
-        for (const feature of mapFeatures) {
+        for (const feature of features) {
             if (feature.isLoad) {
                 curMapFeatures.push(feature.type);
             }
         }
         map.setFeatures(curMapFeatures);
-        console.log("mapFeatures: ", map.getFeatures());
+        console.log("features: ", map.getFeatures());
     }
 
     return (
         <Content>
             {
-                mapFeatures.map((feature) => {
+                features.map((feature) => {
                     return (
                         <label key={feature.zhName}>
                             <input
