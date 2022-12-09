@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: Consolas, sans-serif;
+}
+
+html {
+    font-size: 16px;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/*//.ControlPanel-LabelAndButton {*/
+/*//    background: linear-gradient(145deg, #cacaca, #f0f0f0);*/
+/*//    box-shadow: 1px 1px 2px #868686,*/
+/*//    -1px -1px 2px #ffffff;*/
+/*//    */
+/*//    transition-duration: 0.1s;*/
+/*//    */
+/*//    &:active {*/
+/*//        transform: scale(0.9);*/
+/*//    }*/
+/*//}*/
