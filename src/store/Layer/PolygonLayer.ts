@@ -1,14 +1,15 @@
 import {makeAutoObservable} from "mobx";
-import {AMap, map} from "../component/MapScreen";
-import {mapInfos} from "./MapInfos";
+import {AMap, map} from "../../component/MapScreen";
+import {mapInfos} from "../MapInfos";
 import {newPointContent} from "./PointLayer";
+import {Layer} from "./types";
 
-class PolygonLayer {
+class PolygonLayer implements Layer {
     polygons: AMap.Polygon[] = [];
     newPolygon: AMap.Polygon | null = null;
     pointsOfNewPolygon: AMap.Marker[] = [];
     toMousePolyline: AMap.Polyline[] = [];
-    polygonEditors: any[] = [];
+    editors: any[] = [];
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true});
@@ -22,11 +23,10 @@ class PolygonLayer {
                 fillColor: "#1890ff",
                 strokeColor: "#1890ff"
             } as AMap.PolygonOptions);
-            polygon.on("rightclick", this.removeAPolygon);
+            polygon.on("rightclick", this.removeOne);
             this.polygons.push(polygon);
             map.add(polygon);
-            map.remove(this.newPolygon);
-            this.newPolygon = null;
+            this.removeToMousePolyline()
             map.remove(this.pointsOfNewPolygon);
             this.pointsOfNewPolygon = [];
         }
@@ -40,6 +40,8 @@ class PolygonLayer {
             fillColor: "orange",
             strokeColor: "orange"
         } as AMap.PolygonOptions);
+        this.newPolygon!.on("mousemove", this.createToMousePolyline);
+        this.newPolygon!.on("click", this.collectPoints);
         map.add(this.newPolygon!);
     }
 
@@ -61,29 +63,33 @@ class PolygonLayer {
     createToMousePolyline(e: any) {
         this.removeToMousePolyline();
         if (this.pointsOfNewPolygon.length >= 1) {
-            // 避免难以点击
-            e.lnglat.setLng(this.pointsOfNewPolygon[0].getPosition()!.lng < e.lnglat.lng ? e.lnglat.lng - 0.0001 : e.lnglat.lng + 0.0001);
-            e.lnglat.setLat(this.pointsOfNewPolygon[0].getPosition()!.lat < e.lnglat.lat ? e.lnglat.lat - 0.0001 : e.lnglat.lat + 0.0001);
             this.toMousePolyline[0] = new AMap.Polyline({
                 path: [this.pointsOfNewPolygon[0].getPosition()!, e.lnglat!],
                 strokeColor: "orange",
                 strokeWeight: 5,
                 strokeStyle: "dashed"
             });
-            e.lnglat.setLng(this.pointsOfNewPolygon[this.pointsOfNewPolygon.length - 1].getPosition()!.lng < e.lnglat.lng ? e.lnglat.lng - 0.0001 : e.lnglat.lng + 0.0001);
-            e.lnglat.setLat(this.pointsOfNewPolygon[this.pointsOfNewPolygon.length - 1].getPosition()!.lat < e.lnglat.lat ? e.lnglat.lat - 0.0001 : e.lnglat.lat + 0.0001);
+            this.toMousePolyline[0].on("mousemove", this.createToMousePolyline);
+            this.toMousePolyline[0].on("click", this.collectPoints);
+            this.toMousePolyline[0].on("rightclick", this.createPolygon);
             this.toMousePolyline[1] = new AMap.Polyline({
                 path: [this.pointsOfNewPolygon[this.pointsOfNewPolygon.length - 1].getPosition()!, e.lnglat!],
                 strokeColor: "orange",
                 strokeWeight: 5,
                 strokeStyle: "dashed"
             });
+            this.toMousePolyline[1].on("mousemove", this.createToMousePolyline);
+            this.toMousePolyline[1].on("click", this.collectPoints);
+            this.toMousePolyline[1].on("rightclick", this.createPolygon);
             map.add(this.toMousePolyline);
         }
     }
 
     removeToMousePolyline() {
-        this.toMousePolyline && map.remove(this.toMousePolyline);
+        if (this.toMousePolyline) {
+            map.remove(this.toMousePolyline);
+            this.toMousePolyline = [];
+        }
     }
 
     startEditing() {
@@ -101,29 +107,29 @@ class PolygonLayer {
         map.off("rightclick", this.createPolygon);
     }
 
-    openPolygonEditor() {
+    openEditor() {
         this.polygons.forEach((polygon) => {
-            const polygonEditor = new AMap.PolylineEditor(map, polygon);
-            polygonEditor.open();
-            this.polygonEditors.push(polygonEditor);
+            const Editor = new AMap.PolylineEditor(map, polygon);
+            Editor.open();
+            this.editors.push(Editor);
         });
     }
 
-    closePolygonEditor() {
-        this.polygonEditors.forEach((polygonEditor) => {
-            polygonEditor.close();
+    closeEditor() {
+        this.editors.forEach((editor) => {
+            editor.close();
         });
-        this.polygonEditors = [];
+        this.editors = [];
     }
 
-    removeAPolygon(e: any) {
+    removeOne(e: any) {
         const index = this.polygons.findIndex((point) => point === e.target);
         this.polygons.splice(index, 1);
         map.remove(e.target);
     }
 
-    removeAllPolygons() {
-        if (!this.newPolygon && this.pointsOfNewPolygon.length === 0 && this.toMousePolyline.length === 0 && this.polygons.length === 0 && this.polygonEditors.length === 0) {
+    removeAll() {
+        if (!this.newPolygon && this.pointsOfNewPolygon.length === 0 && this.toMousePolyline.length === 0 && this.polygons.length === 0 && this.editors.length === 0) {
             return false;
         } else {
             if (this.newPolygon) {
@@ -142,9 +148,9 @@ class PolygonLayer {
                 map.remove(this.polygons);
                 this.polygons = [];
             }
-            if (this.polygonEditors.length !== 0) {
-                this.closePolygonEditor();
-                this.polygonEditors = [];
+            if (this.editors.length !== 0) {
+                this.closeEditor();
+                this.editors = [];
             }
             return true;
         }
