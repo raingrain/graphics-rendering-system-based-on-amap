@@ -23,7 +23,7 @@ class PointLayer implements Layer {
             content: editingPointContent
         });
         // 当前点变成默认点后还可以在拖拽或删除操作中变成编辑点
-        this.allowEditingAndRemove(point);
+        this.allowDragAndRemove(point);
         // 把之前的编辑点移除
         this.turnEditingPointIntoDefaultPoint();
         // 把当前点设置为编辑点
@@ -53,46 +53,50 @@ class PointLayer implements Layer {
         e.target.setContent(editingPointContent);
     }
 
-    allowEditingAndRemove(point: AMap.Marker) {
+    // 允许一个点可拖拽和可删除
+    allowDragAndRemove(point: AMap.Marker) {
         point.setDraggable(true);
         point.setCursor("move");
         point.on("mousedown", this.turnDefaultPointIntoEditingPointWhenMouseDownOnPoint);
         point.on("rightclick", this.removeOne);
     }
 
-    banEditingAndRemove(point: AMap.Marker) {
+    // 禁止一个点可拖拽和可删除
+    forbidDragAndRemove(point: AMap.Marker) {
         point.setDraggable(false);
         point.setCursor("default");
         point.off("mousedown", this.turnDefaultPointIntoEditingPointWhenMouseDownOnPoint);
         point.off("rightclick", this.removeOne);
     }
 
-    addAllEventListener() {
-        this.points.forEach((point) => this.allowEditingAndRemove(point));
+    addEventListenerAndAttribute() {
+        this.points.forEach((point) => this.allowDragAndRemove(point));
         map.on("click", this.createPoint);
     }
 
-    removeAllEventListener() {
-        this.points.forEach((point) => this.banEditingAndRemove(point));
+    removeEventListenerAndAttribute() {
+        this.points.forEach((point) => this.forbidDragAndRemove(point));
         map.off("click", this.createPoint);
     }
 
     startEditing() {
         mapInfos.setIsEditingAndChangeCursorStyle(true);
-        this.addAllEventListener();
+        this.addEventListenerAndAttribute();
     }
 
     stopEditing() {
-        mapInfos.setIsEditingAndChangeCursorStyle(false);
+        // 不要忘记把正在编辑点变成默认点
         this.turnEditingPointIntoDefaultPoint();
-        this.removeAllEventListener();
-        console.log(this.editingPoint, this.points);
+        mapInfos.setIsEditingAndChangeCursorStyle(false);
+        this.removeEventListenerAndAttribute();
     }
 
     removeOne(e: any) {
+        // 在点集数组中删除
         const index = this.points.findIndex((point) => point === e.target);
         this.points.splice(index, 1);
         map.remove(e.target);
+        // 如果它是正在编辑的元素，将正在编辑元素设置为空
         if (this.editingPoint && e.target === this.editingPoint) {
             map.remove(this.editingPoint);
             this.editingPoint = null;
