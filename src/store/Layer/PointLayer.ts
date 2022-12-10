@@ -3,8 +3,9 @@ import {AMap, map} from "../../component/MapScreen";
 import {mapInfos} from "../MapInfos";
 import {Layer} from "./types";
 
-export const oldPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: #1890ff; width: .75rem; height: .75rem; transform: translate(-50%, -50%)"></div>`;
-export const newPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: orange; width: 1rem; height: 1rem; transform: translate(-50%, -50%)"></div>`;
+export const zoomIndefaultPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: #1890ff; width: 1rem; height: 1rem; transform: translate(-50%, -50%)"></div>`;
+export const defaultPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: #1890ff; width: .75rem; height: .75rem; transform: translate(-50%, -50%)"></div>`;
+export const editingPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: orange; width: 1rem; height: 1rem; transform: translate(-50%, -50%)"></div>`;
 
 class PointLayer implements Layer {
 
@@ -22,7 +23,7 @@ class PointLayer implements Layer {
             map,
             position: e.lnglat,
             draggable: true,
-            content: newPointContent,
+            content: editingPointContent,
             cursor: "move"
         });
         // 当前点变成默认点后还可以在拖拽或删除操作中变成编辑点
@@ -39,7 +40,7 @@ class PointLayer implements Layer {
     changeEditingPointToDefaultPoint() {
         // 如果存在编辑点，就把它变成默认点
         if (this.editingPoint) {
-            this.editingPoint.setContent(oldPointContent);
+            this.editingPoint.setContent(defaultPointContent);
             // 然后删除它
             this.editingPoint = null;
         }
@@ -52,49 +53,37 @@ class PointLayer implements Layer {
         // 然后把当前点变成点击点
         this.editingPoint = e.target;
         // 当前点样式设置为编辑点样式
-        e.target.setContent(newPointContent);
+        e.target.setContent(editingPointContent);
     }
 
-    allowDrag() {
+    addEventListener() {
         for (const point of this.points) {
             point.setDraggable(true);
             point.setCursor("move");
             point.on("mousedown", this.changeDefaultPointToEditingPoint);
+            point.on("rightclick", this.removeOne);
         }
     }
 
-    forbidDrag() {
+    removeEventListener() {
         for (const point of this.points) {
             point.setDraggable(false);
             point.setCursor("default");
             point.off("mousedown", this.changeDefaultPointToEditingPoint);
-        }
-    }
-
-    allowRemove() {
-        for (const point of this.points) {
-            point.on("rightclick", this.removeOne)
-        }
-    }
-
-    forbidRemove() {
-        for (const point of this.points) {
-            point.off("rightclick", this.removeOne)
+            point.off("rightclick", this.removeOne);
         }
     }
 
     startEditing() {
         mapInfos.setIsEditingAndChangeCursorStyle(true);
-        this.allowDrag();
-        this.allowRemove();
+        this.addEventListener();
         map.on("click", this.createPoint);
     }
 
     stopEditing() {
         mapInfos.setIsEditingAndChangeCursorStyle(false);
         this.changeEditingPointToDefaultPoint();
-        this.forbidDrag();
-        this.forbidRemove();
+        this.removeEventListener();
         map.off("click", this.createPoint);
     }
 
