@@ -37,7 +37,7 @@ const MapScreen = observer(() => {
             // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
             version: "2.0",
             // 需要使用的的控件列表，如比例尺'AMap.Scale'等
-            plugins: ["AMap.ControlBar", "AMap.ToolBar", "AMap.Scale", "AMap.HawkEye", "AMap.PolylineEditor"]
+            plugins: ["AMap.ControlBar", "AMap.ToolBar", "AMap.Scale", "AMap.HawkEye", "AMap.PolylineEditor", "AMap.PolygonEditor", "AMap.RectangleEditor", "AMap.CircleEditor", "AMap.EllipseEditor", "AMap.BezierCurveEditor", "AMap.MouseTool", "AMap.RangingTool"]
         }).then((_AMap) => {
             AMap = _AMap;
             // 根据ID以及初始化配置对象加载地图
