@@ -15,7 +15,7 @@ export const PolygonTool = () => {
     }
 
     function editorSwitch() {
-        !isEditorOpen ? polygonLayer.openPolygonEditor() : polygonLayer.closePolygonEditor();
+        !isEditorOpen ? polygonLayer.openEditor() : polygonLayer.closeEditor();
         setIsEditorOpen(prevState => !prevState);
     }
 
