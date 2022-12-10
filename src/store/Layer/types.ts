@@ -1,16 +1,10 @@
 export interface Layer {
 
-    // 每次开始编辑当前图层时允许已创建的矢量图形拖拽
-    allowDrag?(): void;
+    // 每次开始编辑时给当前图层已经存在的矢量图形绑定监听事件
+    addEventListener?(): void;
 
-    // 每次结束编辑当前图层时禁止已创建的矢量图形拖拽
-    forbidDrag?(): void;
-
-    // 每次开始编辑当前图层时允许已创建的矢量图形被单个删除
-    allowRemove?(): void;
-
-    // 每次结束编辑当前图层时禁止已创建的矢量图形被单个删除
-    forbidRemove?(): void;
+    // 每次结束编辑时给当前图层已经存在的矢量图形移除监听事件
+    removeEventListener?(): void;
 
     // 开始编辑图层
     startEditing(): void;

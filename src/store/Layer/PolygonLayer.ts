@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {AMap, map} from "../../component/MapScreen";
 import {mapInfos} from "../MapInfos";
-import {newPointContent} from "./PointLayer";
+import {editingPointContent} from "./PointLayer";
 import {Layer} from "./types";
 
 class PolygonLayer implements Layer {
@@ -51,7 +51,7 @@ class PolygonLayer implements Layer {
             map: map,
             position: e.lnglat,
             draggable: true,
-            content: newPointContent,
+            content: editingPointContent,
             extData: {
                 id: this.pointsOfNewPolygon.length + 1
             }
