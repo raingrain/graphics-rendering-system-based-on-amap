@@ -6,6 +6,9 @@ import {PointTool} from "./PointTool";
 import {ClearTool} from "./ClearTool";
 import {PolylineTool} from "./PolylineTool";
 import {PolygonTool} from "./PolygonTool";
+import {RectTool} from "./RectTool";
+import {CircleTool} from "./CircleTool";
+import {EllipseTool} from "./EllipseTool";
 
 export const MapToolbar = () => {
     return (
@@ -15,7 +18,10 @@ export const MapToolbar = () => {
             top: "1rem",
             left: "600px"
         }}>
+            <EllipseTool/>
             <ClearTool/>
+            <CircleTool/>
+            <RectTool/>
             <PolygonTool/>
             <PolylineTool/>
             <PointTool />
