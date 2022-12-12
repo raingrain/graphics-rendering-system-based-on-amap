@@ -20,12 +20,13 @@ const Panel = styled.div`
     bottom: 0;
     right: 0;
     left: 250px;
-    height: 30px;
+    height: 20px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     div {
         margin-right: 2rem;
+        font-size: .5rem;
     }
 `
 
