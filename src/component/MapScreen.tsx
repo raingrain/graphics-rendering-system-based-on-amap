@@ -50,9 +50,9 @@ const MapScreen = observer(() => {
                 // 初始化地图中心点位置，十进制经纬度
                 center: mapInfos.centerPoint,
                 // 旋转角是否可以调整
-                rotateEnable: true,
+                rotateEnable: false,
                 // 旋转角角度
-                rotation: -15,
+                rotation: 0,
                 // 俯仰角是否可以调整
                 pitchEnable: true,
                 // 俯仰角角度
