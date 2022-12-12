@@ -26,7 +26,7 @@ class PolygonLayer implements Layer {
     polygonOpenEditor: AMap.Polygon | null = null;
 
     createDefault() {
-        if (this.editing) {
+        if (this.pointsOfEditing.length !== 0 && this.editing) {
             const polygon = new AMap.Polygon({
                 path: this.editing.getPath(),
                 fillColor: "#1890ff",
