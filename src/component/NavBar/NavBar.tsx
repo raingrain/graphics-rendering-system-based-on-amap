@@ -13,7 +13,7 @@ export function NavBar() {
                 <div className="flex justify-center items-center">
                     <AMapIcon size={"16"} />&nbsp;+&nbsp;<ReactIcon size={"16"} />&nbsp;+&nbsp;<TSIcon size={"16"} />
                 </div>
-                <p className="text-base font-bold">AMap-React-TS</p>
+                <p className="text-base font-bold">GrainRain-Map</p>
             </div>
             <a className="flex items-center mr-4 ml-auto" href="https://github.com/raingrain/mini-amap-react-ts" target="_blank">
                 {/*github图标*/}
