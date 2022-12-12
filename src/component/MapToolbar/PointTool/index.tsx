@@ -11,6 +11,7 @@ export const PointTool = observer(() => {
     const {pointLayer} = useStore();
 
     function editToolSwitch() {
+        !pointLayer.isEditingMode && mapInfos.closeAllLayers();
         !pointLayer.isEditingMode ? pointLayer.startEditing() : pointLayer.stopEditing();
     }
 

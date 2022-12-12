@@ -243,6 +243,15 @@ class RectLayer implements Layer {
         }
     }
 
+    closeLayer() {
+        if (this.isEditingMode) {
+            this.stopEditing();
+        }
+        if (this.isEditorMode) {
+            this.closeEditors();
+        }
+    }
+
 }
 
 export const rectLayer = new RectLayer();

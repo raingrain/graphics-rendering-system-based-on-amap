@@ -256,7 +256,6 @@ class PolylineLayer implements Layer {
 
     removeAll() {
         if (!this.editing && !this.toMouse && this.pointsOfEditing.length === 0 && this.polylines.length === 0) {
-
             return false;
         } else {
             this.closeEditor();
@@ -265,6 +264,15 @@ class PolylineLayer implements Layer {
             this.removePointsOfEditing();
             this.removeAllOverlays();
             return true;
+        }
+    }
+
+    closeLayer() {
+        if (this.isEditingMode) {
+            this.stopEditing();
+        }
+        if (this.isEditorMode) {
+            this.closeEditors();
         }
     }
 

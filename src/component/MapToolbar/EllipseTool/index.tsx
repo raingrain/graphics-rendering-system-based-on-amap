@@ -2,16 +2,19 @@ import {ControlButton} from "../index";
 import {EllipseEditorIcon, EllipseEditToolIcon} from "../../../assets/Icon";
 import {useStore} from "../../../store";
 import {observer} from "mobx-react-lite";
+import {mapInfos} from "../../../store/MapInfos";
 
 export const EllipseTool = observer(() => {
 
     const {ellipseLayer} = useStore();
 
     function editToolSwitch() {
+        !ellipseLayer.isEditingMode && mapInfos.closeAllLayers();
         !ellipseLayer.isEditingMode ? ellipseLayer.startEditing() : ellipseLayer.stopEditing();
     }
 
     function editorSwitch() {
+        !ellipseLayer.isEditorMode && mapInfos.closeAllLayers();
         !ellipseLayer.isEditorMode ? ellipseLayer.openEditors() : ellipseLayer.closeEditors();
     }
 

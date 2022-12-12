@@ -2,16 +2,19 @@ import {useStore} from "../../../store";
 import {ControlButton} from "../index";
 import {PolygonEditToolIcon, PolygonEditorIcon} from "../../../assets/Icon";
 import {observer} from "mobx-react-lite";
+import {mapInfos} from "../../../store/MapInfos";
 
 export const PolygonTool = observer(() => {
 
     const {polygonLayer} = useStore();
 
     function editToolSwitch() {
+        !polygonLayer.isEditingMode && mapInfos.closeAllLayers();
         !polygonLayer.isEditingMode ? polygonLayer.startEditing() : polygonLayer.stopEditing();
     }
 
     function editorSwitch() {
+        !polygonLayer.isEditorMode && mapInfos.closeAllLayers();
         !polygonLayer.isEditorMode ? polygonLayer.openEditors() : polygonLayer.closeEditors();
     }
 

@@ -136,6 +136,11 @@ class PointLayer implements Layer {
         }
     }
 
+    closeLayer() {
+        if (this.isEditingMode) {
+            this.stopEditing();
+        }
+    }
 }
 
 export const pointLayer = new PointLayer();

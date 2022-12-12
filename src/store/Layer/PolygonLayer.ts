@@ -265,6 +265,15 @@ class PolygonLayer implements Layer {
         }
     }
 
+    closeLayer() {
+        if (this.isEditingMode) {
+            this.stopEditing();
+        }
+        if (this.isEditorMode) {
+            this.closeEditors();
+        }
+    }
+
 }
 
 export const polygonLayer = new PolygonLayer();

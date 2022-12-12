@@ -2,16 +2,19 @@ import {ControlButton} from "../index";
 import {RectEditorIcon, RectEditToolIcon} from "../../../assets/Icon";
 import {useStore} from "../../../store";
 import {observer} from "mobx-react-lite";
+import {mapInfos} from "../../../store/MapInfos";
 
 export const RectTool = observer(() => {
 
     const {rectLayer} = useStore();
 
     function editToolSwitch() {
+        !rectLayer.isEditingMode && mapInfos.closeAllLayers();
         !rectLayer.isEditingMode ? rectLayer.startEditing() : rectLayer.stopEditing();
     }
 
     function editorSwitch() {
+        !rectLayer.isEditorMode && mapInfos.closeAllLayers();
         !rectLayer.isEditorMode ? rectLayer.openEditors() : rectLayer.closeEditors();
     }
 

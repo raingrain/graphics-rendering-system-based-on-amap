@@ -226,6 +226,16 @@ class EllipseLayer implements Layer {
             return true;
         }
     }
+
+    closeLayer() {
+        if (this.isEditingMode) {
+            this.stopEditing();
+        }
+        if (this.isEditorMode) {
+            this.closeEditors();
+        }
+    }
+
 }
 
 export const ellipseLayer = new EllipseLayer();
