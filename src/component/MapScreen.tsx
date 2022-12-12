@@ -50,7 +50,7 @@ const MapScreen = observer(() => {
                 // 初始化地图中心点位置，十进制经纬度
                 center: mapInfos.centerPoint,
                 // 旋转角是否可以调整
-                rotateEnable: false,
+                rotateEnable: true,
                 // 旋转角角度
                 rotation: 0,
                 // 俯仰角是否可以调整
@@ -103,34 +103,12 @@ const MapScreen = observer(() => {
         <div style={{"position": "absolute", "inset": "50px 0 0"}}>
             {contextHolder}
             {/*地图容器，需要一个ID*/}
-            <div id="container" style={{position: "absolute", inset: "0 0 30px 250px"}}></div>
-            <ControlPanel>
-                <h1 className="text-center font-bold text-2xl">Control Panel</h1>
-                {/*<OperationPanel />*/}
-            </ControlPanel>
+            <div id="container" style={{position: "absolute", inset: "0 0 20px 0"}}></div>
             <MapToolbar />
             <BottomInfoPanel />
         </div>
     );
 });
-
-const ControlPanel = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 250px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
-    // background: linear-gradient(145deg, #cacaca, #f0f0f0);
-    // 设置滚动并移除滚动条样式
-    overflow: scroll;
-    
-    &::-webkit-scrollbar {
-        display: none;
-    }
-`;
 
 
 export {MapScreen, AMap, map};
