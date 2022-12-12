@@ -1,8 +1,12 @@
 import {makeAutoObservable} from "mobx";
 import {AMap, map} from "../../component/MapScreen";
-import {editingPointContent} from "./PointLayer";
+import {editingPointContent, pointLayer} from "./PointLayer";
 import {mapInfos} from "../MapInfos";
 import {Layer} from "./types";
+import {rectLayer} from "./RectLayer";
+import {ellipseLayer} from "./EllipseLayer";
+import {polylineLayer} from "./PolylineLayer";
+import {polygonLayer} from "./PolygonLayer";
 
 class CircleLayer implements Layer {
 
@@ -83,9 +87,9 @@ class CircleLayer implements Layer {
 
     allowDefaultSomethingWhenStartEditing(circle: AMap.Circle) {
         circle.setDraggable(true);
-        circle.on("rightclick", this.removeOneOverlay);
         circle.on("click", this.createPointOfEditing);
         circle.on("mousemove", this.createToMouse);
+        circle.on("rightclick", this.removeOneOverlay);
     }
 
     forbidDefaultSomethingWhenStopEditing(circle: AMap.Circle) {
@@ -102,6 +106,36 @@ class CircleLayer implements Layer {
         // 只创建定点时右键直接删除
         map.on("rightclick", this.removePointsOfEditing);
         map.on("rightclick", this.removeToMouse);
+        pointLayer.points.forEach((point) => {
+            point.on("click", this.createPointOfEditing);
+            point.on("mousemove", this.createToMouse);
+            point.on("rightclick", this.removePointsOfEditing);
+            point.on("rightclick", this.removeToMouse);
+        })
+        polylineLayer.polylines.forEach((polyline) => {
+            polyline.on("click", this.createPointOfEditing);
+            polyline.on("mousemove", this.createToMouse);
+            polyline.on("rightclick", this.removePointsOfEditing);
+            polyline.on("rightclick", this.removeToMouse);
+        })
+        polygonLayer.polygons.forEach((polygon) => {
+            polygon.on("click", this.createPointOfEditing);
+            polygon.on("mousemove", this.createToMouse);
+            polygon.on("rightclick", this.removePointsOfEditing);
+            polygon.on("rightclick", this.removeToMouse);
+        })
+        rectLayer.rects.forEach((rect) => {
+            rect.on("click", this.createPointOfEditing);
+            rect.on("mousemove", this.createToMouse);
+            rect.on("rightclick", this.removePointsOfEditing);
+            rect.on("rightclick", this.removeToMouse);
+        })
+        ellipseLayer.ellipses.forEach((ellipse) => {
+            ellipse.on("click", this.createPointOfEditing);
+            ellipse.on("mousemove", this.createToMouse);
+            ellipse.on("rightclick", this.removePointsOfEditing);
+            ellipse.on("rightclick", this.removeToMouse);
+        })
     }
 
     forbidMapSomethingWhenStopEditing() {
@@ -110,6 +144,36 @@ class CircleLayer implements Layer {
         map.off("mousemove", this.createToMouse);
         map.off("rightclick", this.removePointsOfEditing);
         map.off("rightclick", this.removeToMouse);
+        pointLayer.points.forEach((point) => {
+            point.off("click", this.createPointOfEditing);
+            point.off("mousemove", this.createToMouse);
+            point.off("rightclick", this.removePointsOfEditing);
+            point.off("rightclick", this.removeToMouse);
+        })
+        polylineLayer.polylines.forEach((polyline) => {
+            polyline.off("click", this.createPointOfEditing);
+            polyline.off("mousemove", this.createToMouse);
+            polyline.off("rightclick", this.removePointsOfEditing);
+            polyline.off("rightclick", this.removeToMouse);
+        })
+        polygonLayer.polygons.forEach((polygon) => {
+            polygon.off("click", this.createPointOfEditing);
+            polygon.off("mousemove", this.createToMouse);
+            polygon.off("rightclick", this.removePointsOfEditing);
+            polygon.off("rightclick", this.removeToMouse);
+        })
+        rectLayer.rects.forEach((rect) => {
+            rect.off("click", this.createPointOfEditing);
+            rect.off("mousemove", this.createToMouse);
+            rect.off("rightclick", this.removePointsOfEditing);
+            rect.off("rightclick", this.removeToMouse);
+        })
+        ellipseLayer.ellipses.forEach((ellipse) => {
+            ellipse.off("click", this.createPointOfEditing);
+            ellipse.off("mousemove", this.createToMouse);
+            ellipse.off("rightclick", this.removePointsOfEditing);
+            ellipse.off("rightclick", this.removeToMouse);
+        })
     }
 
     allowSomethingWhenStartEditing() {

@@ -2,6 +2,11 @@ import {makeAutoObservable} from "mobx";
 import {AMap, map} from "../../component/MapScreen";
 import {mapInfos} from "../MapInfos";
 import {Layer} from "./types";
+import {polylineLayer} from "./PolylineLayer";
+import {polygonLayer} from "./PolygonLayer";
+import {rectLayer} from "./RectLayer";
+import {ellipseLayer} from "./EllipseLayer";
+import {circleLayer} from "./CircleLayer";
 
 export const defaultPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: #1890ff; width: .75rem; height: .75rem; transform: translate(-50%, -50%)"></div>`;
 export const editingPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: orange; width: 1rem; height: 1rem; transform: translate(-50%, -50%)"></div>`;
@@ -19,7 +24,7 @@ class PointLayer implements Layer {
     // 是否正在编辑该图层
     isEditingMode = false;
 
-    createDefaultOverlay(e: any) {
+    createDefault(e: any) {
         const point = new AMap.Marker({
             position: e.lnglat,
             content: editingPointContent
@@ -71,12 +76,42 @@ class PointLayer implements Layer {
 
     allowMapSomethingWhenStartEditing() {
         mapInfos.setIsEditingAndChangeCursorStyle(true);
-        map.on("click", this.createDefaultOverlay);
+        map.on("click", this.createDefault);
+        polylineLayer.polylines.forEach((polyline) => {
+            polyline.on("click", this.createDefault);
+        })
+        polygonLayer.polygons.forEach((polygon) => {
+            polygon.on("click", this.createDefault);
+        })
+        rectLayer.rects.forEach((rect) => {
+            rect.on("click", this.createDefault);
+        })
+        circleLayer.circles.forEach((circle) => {
+            circle.on("click", this.createDefault);
+        })
+        ellipseLayer.ellipses.forEach((ellipse) => {
+            ellipse.on("click", this.createDefault);
+        })
     }
 
     forbidMapSomethingWhenStopEditing() {
         mapInfos.setIsEditingAndChangeCursorStyle(false);
-        map.off("click", this.createDefaultOverlay);
+        map.off("click", this.createDefault);
+        polylineLayer.polylines.forEach((polyline) => {
+            polyline.off("click", this.createDefault);
+        })
+        polygonLayer.polygons.forEach((polygon) => {
+            polygon.off("click", this.createDefault);
+        })
+        rectLayer.rects.forEach((rect) => {
+            rect.off("click", this.createDefault);
+        })
+        circleLayer.circles.forEach((circle) => {
+            circle.off("click", this.createDefault);
+        })
+        ellipseLayer.ellipses.forEach((ellipse) => {
+            ellipse.off("click", this.createDefault);
+        })
     }
 
     allowSomethingWhenStartEditing() {
