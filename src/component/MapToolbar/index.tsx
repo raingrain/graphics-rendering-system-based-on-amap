@@ -16,7 +16,7 @@ export const MapToolbar = () => {
             display: "flex",
             position: "absolute",
             top: "1rem",
-            left: "600px"
+            left: "400px"
         }}>
             <EllipseTool/>
             <ClearTool/>
