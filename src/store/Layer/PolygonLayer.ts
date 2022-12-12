@@ -5,153 +5,262 @@ import {editingPointContent} from "./PointLayer";
 import {Layer} from "./types";
 
 class PolygonLayer implements Layer {
-    polygons: AMap.Polygon[] = [];
-    newPolygon: AMap.Polygon | null = null;
-    pointsOfNewPolygon: AMap.Marker[] = [];
-    toMousePolyline: AMap.Polyline[] = [];
-    editors: any[] = [];
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true});
     }
 
-    createPolygon() {
-        this.removeToMousePolyline();
-        if (this.newPolygon) {
+    // 已经绘制好的面集合
+    polygons: AMap.Polygon[] = [];
+    // 正在绘制的面中已经绘制好的部分
+    editing: AMap.Polygon | null = null;
+    // 正在绘制的面中已经绘制好的部分的节点
+    pointsOfEditing: AMap.Marker[] = [];
+    // 指向鼠标指针的两条线
+    toMouse: AMap.Polyline[] = [];
+    // 编辑模式
+    isEditingMode = false;
+    // 编辑器模式
+    isEditorMode = false;
+    // 正在打开编辑器的面
+    polygonOpenEditor: AMap.Polygon | null = null;
+
+    createDefault() {
+        if (this.editing) {
             const polygon = new AMap.Polygon({
-                path: this.newPolygon.getPath(),
+                path: this.editing.getPath(),
                 fillColor: "#1890ff",
                 strokeColor: "#1890ff"
-            } as AMap.PolygonOptions);
-            polygon.on("rightclick", this.removeOne);
+            });
+            polygon.setExtData({
+                editor: new AMap.PolygonEditor(map, polygon)
+            });
+            this.allowDefaultSomethingWhenStartEditing(polygon);
             this.polygons.push(polygon);
             map.add(polygon);
-            this.removeToMousePolyline()
-            map.remove(this.pointsOfNewPolygon);
-            this.pointsOfNewPolygon = [];
         }
+        this.removeEditing();
+        this.removeToMouse();
+        this.removePointsOfEditing();
     }
 
-    createNewPolygon() {
-        this.removeToMousePolyline();
-        this.newPolygon && map.remove(this.newPolygon);
-        this.newPolygon = new AMap.Polygon({
-            path: this.pointsOfNewPolygon.map((point) => point.getPosition()!),
+    createEditing() {
+        this.removeToMouse();
+        this.editing && map.remove(this.editing);
+        this.editing = new AMap.Polygon({
+            path: this.pointsOfEditing.map((point) => point.getPosition()!),
             fillColor: "orange",
             strokeColor: "orange"
-        } as AMap.PolygonOptions);
-        this.newPolygon!.on("mousemove", this.createToMousePolyline);
-        this.newPolygon!.on("click", this.collectPoints);
-        map.add(this.newPolygon!);
+        });
+        // 可以在上面创建新的点
+        this.editing!.on("click", this.createPointOfEditing);
+        // 指向鼠标的线可以在上面移动
+        this.editing!.on("mousemove", this.createToMouse);
+        // 可以在上面右键完成创建
+        this.editing!.on("rightclick", this.createDefault);
+        map.add(this.editing!);
     }
 
-    collectPoints(e: any) {
-        this.removeToMousePolyline();
+    createPointOfEditing(e: any) {
+        this.removeToMouse();
         const point = new AMap.Marker({
-            map: map,
             position: e.lnglat,
             draggable: true,
-            content: editingPointContent,
-            extData: {
-                id: this.pointsOfNewPolygon.length + 1
-            }
-        } as AMap.MarkerOptions);
-        this.pointsOfNewPolygon.push(point);
-        this.createNewPolygon();
+            content: editingPointContent
+        });
+        this.pointsOfEditing.push(point);
+        map.add(point);
+        // 编辑的面延长
+        this.createEditing();
+        // 正在创建时点可以被拖动，然后线被改变
+        point.on("dragging", this.createEditing);
+        // 可以在点上创建点
+        point.on("click", this.createPointOfEditing);
+        // 指向鼠标的线不会被阻塞
+        point.on("mousemove", this.createToMouse);
+        // 右击可以删除点
+        point.on("rightclick", this.removePointOfEditing);
+        // 地图上双击就先创建一个点，再结束编辑
+        point.on("dblclick", this.createDefault);
     }
 
-    createToMousePolyline(e: any) {
-        this.removeToMousePolyline();
-        if (this.pointsOfNewPolygon.length >= 1) {
-            this.toMousePolyline[0] = new AMap.Polyline({
-                path: [this.pointsOfNewPolygon[0].getPosition()!, e.lnglat!],
+    removePointOfEditing(e: any) {
+        const index = this.pointsOfEditing.findIndex((point) => point === e.target);
+        this.pointsOfEditing.splice(index, 1);
+        map.remove(e.target);
+        this.createEditing();
+    }
+
+    createToMouse(e: any) {
+        this.removeToMouse();
+        if (this.pointsOfEditing.length >= 1) {
+            // 多边形起点到鼠标
+            this.toMouse[0] = new AMap.Polyline({
+                path: [this.pointsOfEditing[0].getPosition()!, e.lnglat!],
                 strokeColor: "orange",
-                strokeWeight: 5,
                 strokeStyle: "dashed"
             });
-            this.toMousePolyline[0].on("mousemove", this.createToMousePolyline);
-            this.toMousePolyline[0].on("click", this.collectPoints);
-            this.toMousePolyline[0].on("rightclick", this.createPolygon);
-            this.toMousePolyline[1] = new AMap.Polyline({
-                path: [this.pointsOfNewPolygon[this.pointsOfNewPolygon.length - 1].getPosition()!, e.lnglat!],
+            // 取消阻塞感
+            this.toMouse[0].on("click", this.createPointOfEditing);
+            // 让鼠标能在虚线上滑动
+            this.toMouse[0].on("mousemove", this.createToMouse);
+            // 只有一个点时就是删除起点和虚线，不然就是删除虚线并创建存在的线。
+            this.toMouse[0].on("rightclick", this.createDefault);
+            // 最新的点到鼠标
+            this.toMouse[1] = new AMap.Polyline({
+                path: [this.pointsOfEditing[this.pointsOfEditing.length - 1].getPosition()!, e.lnglat!],
                 strokeColor: "orange",
-                strokeWeight: 5,
                 strokeStyle: "dashed"
             });
-            this.toMousePolyline[1].on("mousemove", this.createToMousePolyline);
-            this.toMousePolyline[1].on("click", this.collectPoints);
-            this.toMousePolyline[1].on("rightclick", this.createPolygon);
-            map.add(this.toMousePolyline);
+            this.toMouse[1].on("click", this.createPointOfEditing);
+            this.toMouse[1].on("mousemove", this.createToMouse);
+            this.toMouse[1].on("rightclick", this.createDefault);
+            map.add(this.toMouse);
         }
     }
 
-    removeToMousePolyline() {
-        if (this.toMousePolyline) {
-            map.remove(this.toMousePolyline);
-            this.toMousePolyline = [];
-        }
+    allowDefaultSomethingWhenStartEditing(polygon: AMap.Polygon) {
+        polygon.setDraggable(true);
+        polygon.on("rightclick", this.removeOneOverlay);
+        polygon.on("click", this.createPointOfEditing);
+        polygon.on("mousemove", this.createToMouse);
+    }
+
+    forbidDefaultSomethingWhenStopEditing(polygon: AMap.Polygon) {
+        polygon.setDraggable(false);
+        polygon.off("rightclick", this.removeOneOverlay);
+        polygon.off("click", this.createPointOfEditing);
+        polygon.off("mousemove", this.createToMouse);
+    }
+
+    allowMapSomethingWhenStartEditing() {
+        mapInfos.setIsEditingAndChangeCursorStyle(true);
+        map.on("click", this.createPointOfEditing);
+        map.on("mousemove", this.createToMouse);
+        map.on("rightclick", this.createDefault);
+    }
+
+    forbidMapSomethingWhenStopEditing() {
+        mapInfos.setIsEditingAndChangeCursorStyle(false);
+        map.off("click", this.createPointOfEditing);
+        map.off("mousemove", this.createToMouse);
+        map.off("rightclick", this.createDefault);
+    }
+
+    allowSomethingWhenStartEditing() {
+        this.polygons.forEach((polygon) => this.allowDefaultSomethingWhenStartEditing(polygon));
+        this.allowMapSomethingWhenStartEditing();
+    }
+
+    forbidSomethingWhenStopEditing() {
+        this.polygons.forEach((polygon) => this.forbidDefaultSomethingWhenStopEditing(polygon));
+        this.forbidMapSomethingWhenStopEditing();
     }
 
     startEditing() {
-        mapInfos.setIsEditingAndChangeCursorStyle(true);
-        map.on("click", this.collectPoints);
-        map.on("mousemove", this.createToMousePolyline);
-        map.on("rightclick", this.createPolygon);
+        if (this.isEditorMode) {
+            this.closeEditors();
+            this.isEditorMode = false;
+        }
+        this.isEditingMode = true;
+        this.allowSomethingWhenStartEditing();
     }
 
     stopEditing() {
-        this.createPolygon();
-        mapInfos.setIsEditingAndChangeCursorStyle(false);
-        map.off("click", this.collectPoints);
-        map.off("mousemove", this.createToMousePolyline);
-        map.off("rightclick", this.createPolygon);
+        this.isEditingMode = false;
+        this.createDefault();
+        this.forbidSomethingWhenStopEditing();
     }
 
-    openEditor() {
-        this.polygons.forEach((polygon) => {
-            const Editor = new AMap.PolylineEditor(map, polygon);
-            Editor.open();
-            this.editors.push(Editor);
-        });
+    allowMapSomethingWhenOpenEditors() {
+        mapInfos.setIsEditingAndChangeCursorStyle(true);
+    }
+
+    forbidMapSomethingWhenCloseEditors() {
+        mapInfos.setIsEditingAndChangeCursorStyle(false);
+    }
+
+    allowSomethingWhenOpenEditors() {
+        this.allowMapSomethingWhenOpenEditors();
+    }
+
+    forbidSomethingWhenCloseEditors() {
+        this.forbidMapSomethingWhenCloseEditors();
+    }
+
+    openEditor(e: any) {
+        this.closeEditor();
+        e.target.getExtData().editor.open();
+        this.polygonOpenEditor = e.target;
     }
 
     closeEditor() {
-        this.editors.forEach((editor) => {
-            editor.close();
-        });
-        this.editors = [];
+        if (this.polygonOpenEditor) {
+            this.polygonOpenEditor.getExtData().editor.close();
+            this.polygonOpenEditor = null;
+        }
     }
 
-    removeOne(e: any) {
+    openEditors() {
+        this.allowSomethingWhenOpenEditors();
+        if (this.isEditingMode) {
+            this.stopEditing();
+            this.isEditingMode = false;
+        }
+        this.isEditorMode = true;
+        this.polygons.forEach((polygon) => polygon.on("click", this.openEditor));
+    }
+
+    closeEditors() {
+        this.forbidSomethingWhenCloseEditors();
+        this.closeEditor();
+        this.isEditorMode = false;
+        this.polygons.forEach((polygon) => polygon.off("click", this.openEditor));
+    }
+
+    removeEditing() {
+        if (this.editing) {
+            map.remove(this.editing);
+            this.editing = null;
+        }
+    }
+
+    removePointsOfEditing() {
+        if (this.pointsOfEditing.length !== 0) {
+            map.remove(this.pointsOfEditing);
+            this.pointsOfEditing = [];
+        }
+    }
+
+    removeToMouse() {
+        if (this.toMouse.length !== 0) {
+            map.remove(this.toMouse);
+            this.toMouse = [];
+        }
+    }
+
+    removeAllOverlays() {
+        if (this.polygons.length !== 0) {
+            map.remove(this.polygons);
+            this.polygons = [];
+        }
+    }
+
+    removeOneOverlay(e: any) {
         const index = this.polygons.findIndex((point) => point === e.target);
         this.polygons.splice(index, 1);
         map.remove(e.target);
     }
 
     removeAll() {
-        if (!this.newPolygon && this.pointsOfNewPolygon.length === 0 && this.toMousePolyline.length === 0 && this.polygons.length === 0 && this.editors.length === 0) {
+        if (!this.editing && this.pointsOfEditing.length === 0 && this.toMouse.length === 0 && this.polygons.length === 0) {
             return false;
         } else {
-            if (this.newPolygon) {
-                map.remove(this.newPolygon);
-                this.newPolygon = null;
-            }
-            if (this.pointsOfNewPolygon.length !== 0) {
-                map.remove(this.pointsOfNewPolygon);
-                this.pointsOfNewPolygon = [];
-            }
-            if (this.toMousePolyline.length !== 0) {
-                map.remove(this.toMousePolyline);
-                this.toMousePolyline = [];
-            }
-            if (this.polygons.length !== 0) {
-                map.remove(this.polygons);
-                this.polygons = [];
-            }
-            if (this.editors.length !== 0) {
-                this.closeEditor();
-                this.editors = [];
-            }
+            this.closeEditor();
+            this.removeEditing();
+            this.removePointsOfEditing();
+            this.removeToMouse();
+            this.removeAllOverlays();
             return true;
         }
     }

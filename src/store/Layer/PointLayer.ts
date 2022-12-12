@@ -16,14 +16,16 @@ class PointLayer implements Layer {
     points: AMap.Marker[] = [];
     // 当前正在编辑的点
     editingPoint: AMap.Marker | null = null;
+    // 是否正在编辑该图层
+    isEditingMode = false;
 
-    createPoint(e: any) {
+    createDefaultOverlay(e: any) {
         const point = new AMap.Marker({
             position: e.lnglat,
             content: editingPointContent
         });
         // 当前点变成默认点后还可以在拖拽或删除操作中变成编辑点
-        this.allowDragAndRemove(point);
+        this.allowDefaultSomethingWhenStartEditing(point);
         // 把之前的编辑点移除
         this.turnEditingPointIntoDefaultPoint();
         // 把当前点设置为编辑点
@@ -31,7 +33,7 @@ class PointLayer implements Layer {
         // 加入已经创建好的点集中
         this.points.push(this.editingPoint!);
         // 加入到地图上
-        map.add(point)
+        map.add(point);
     }
 
     turnEditingPointIntoDefaultPoint() {
@@ -53,71 +55,87 @@ class PointLayer implements Layer {
         e.target.setContent(editingPointContent);
     }
 
-    // 允许一个点可拖拽和可删除
-    allowDragAndRemove(point: AMap.Marker) {
+    allowDefaultSomethingWhenStartEditing(point: AMap.Marker) {
         point.setDraggable(true);
         point.setCursor("move");
         point.on("mousedown", this.turnDefaultPointIntoEditingPointWhenMouseDownOnPoint);
-        point.on("rightclick", this.removeOne);
+        point.on("rightclick", this.removeOneOverlay);
     }
 
-    // 禁止一个点可拖拽和可删除
-    forbidDragAndRemove(point: AMap.Marker) {
+    forbidDefaultSomethingWhenStopEditing(point: AMap.Marker) {
         point.setDraggable(false);
         point.setCursor("default");
         point.off("mousedown", this.turnDefaultPointIntoEditingPointWhenMouseDownOnPoint);
-        point.off("rightclick", this.removeOne);
+        point.off("rightclick", this.removeOneOverlay);
     }
 
-    addEventListenerAndAttribute() {
-        this.points.forEach((point) => this.allowDragAndRemove(point));
-        map.on("click", this.createPoint);
+    allowMapSomethingWhenStartEditing() {
+        mapInfos.setIsEditingAndChangeCursorStyle(true);
+        map.on("click", this.createDefaultOverlay);
     }
 
-    removeEventListenerAndAttribute() {
-        this.points.forEach((point) => this.forbidDragAndRemove(point));
-        map.off("click", this.createPoint);
+    forbidMapSomethingWhenStopEditing() {
+        mapInfos.setIsEditingAndChangeCursorStyle(false);
+        map.off("click", this.createDefaultOverlay);
+    }
+
+    allowSomethingWhenStartEditing() {
+        this.points.forEach((point) => this.allowDefaultSomethingWhenStartEditing(point));
+        this.allowMapSomethingWhenStartEditing();
+    }
+
+    forbidSomethingWhenStopEditing() {
+        this.points.forEach((point) => this.forbidDefaultSomethingWhenStopEditing(point));
+        this.forbidMapSomethingWhenStopEditing();
     }
 
     startEditing() {
-        mapInfos.setIsEditingAndChangeCursorStyle(true);
-        this.addEventListenerAndAttribute();
+        this.isEditingMode = true;
+        this.allowSomethingWhenStartEditing();
     }
 
     stopEditing() {
+        this.isEditingMode = false;
         // 不要忘记把正在编辑点变成默认点
         this.turnEditingPointIntoDefaultPoint();
-        mapInfos.setIsEditingAndChangeCursorStyle(false);
-        this.removeEventListenerAndAttribute();
+        this.forbidSomethingWhenStopEditing();
     }
 
-    removeOne(e: any) {
-        // 在点集数组中删除
-        const index = this.points.findIndex((point) => point === e.target);
-        this.points.splice(index, 1);
-        map.remove(e.target);
-        // 如果它是正在编辑的元素，将正在编辑元素设置为空
-        if (this.editingPoint && e.target === this.editingPoint) {
+    removeEditingPoint() {
+        if (this.editingPoint) {
             map.remove(this.editingPoint);
             this.editingPoint = null;
         }
     }
 
+    removeAllOverlays() {
+        if (this.points.length !== 0) {
+            map.remove(this.points);
+            this.points = [];
+        }
+    }
+
+    removeOneOverlay(e: any) {
+        // 在点集数组中删除
+        const index = this.points.findIndex((point) => point === e.target);
+        this.points.splice(index, 1);
+        map.remove(e.target);
+        // 如果它是正在编辑的元素，将正在编辑元素设置为空
+        if (e.target === this.editingPoint) {
+            this.removeEditingPoint();
+        }
+    }
+
     removeAll() {
-        if (this.points.length === 0 && !this.editingPoint) {
+        if (!this.editingPoint && this.points.length === 0) {
             return false;
         } else {
-            if (this.points.length !== 0) {
-                map.remove(this.points);
-                this.points = [];
-            }
-            if (this.editingPoint) {
-                map.remove(this.editingPoint);
-                this.editingPoint = null;
-            }
+            this.removeEditingPoint();
+            this.removeAllOverlays();
             return true;
         }
     }
+
 }
 
 export const pointLayer = new PointLayer();

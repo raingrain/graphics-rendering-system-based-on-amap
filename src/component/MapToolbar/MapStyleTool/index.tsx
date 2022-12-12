@@ -177,8 +177,8 @@ const Content = styled.div`
         div {
             font-size: .5rem;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: centerOfEditing;
+            align-items: centerOfEditing;
         }
     }
 `;

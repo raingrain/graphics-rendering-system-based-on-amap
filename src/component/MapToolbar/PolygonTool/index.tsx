@@ -1,33 +1,29 @@
-import {useState} from "react";
 import {useStore} from "../../../store";
 import {ControlButton} from "../index";
 import {PolygonEditToolIcon, PolygonEditorIcon} from "../../../assets/Icon";
+import {observer} from "mobx-react-lite";
 
-export const PolygonTool = () => {
-    const [isEditToolOpen, setIsEditToolOpen] = useState(false);
-    const [isEditorOpen, setIsEditorOpen] = useState(false);
+export const PolygonTool = observer(() => {
 
     const {polygonLayer} = useStore();
 
     function editToolSwitch() {
-        !isEditToolOpen ? polygonLayer.startEditing() : polygonLayer.stopEditing();
-        setIsEditToolOpen(prevState => !prevState);
+        !polygonLayer.isEditingMode ? polygonLayer.startEditing() : polygonLayer.stopEditing();
     }
 
     function editorSwitch() {
-        !isEditorOpen ? polygonLayer.openEditor() : polygonLayer.closeEditor();
-        setIsEditorOpen(prevState => !prevState);
+        !polygonLayer.isEditorMode ? polygonLayer.openEditors() : polygonLayer.closeEditors();
     }
 
     return (
         <>
             <ControlButton onClick={editToolSwitch}>
-                <PolygonEditToolIcon size="24" isSelected={isEditToolOpen} />
+                <PolygonEditToolIcon size="24" isSelected={polygonLayer.isEditingMode} />
             </ControlButton>
             <ControlButton onClick={editorSwitch}>
-                <PolygonEditorIcon size="24" isSelected={isEditorOpen} />
+                <PolygonEditorIcon size="24" isSelected={polygonLayer.isEditorMode} />
             </ControlButton>
         </>
 
     );
-};
+});

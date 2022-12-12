@@ -7,133 +7,222 @@ import {Layer} from "./types";
 class EllipseLayer implements Layer {
 
     ellipses: AMap.Ellipse[] = [];
-    fixedPoint: AMap.Marker | null = null;
-    toMouseEllipse: AMap.Ellipse | null = null;
-    editors: any[] = [];
+    pointsOfEditing: AMap.Marker[] = [];
+    toMouse: AMap.Ellipse | null = null;
+    // 编辑模式
+    isEditingMode = false;
+    // 编辑器模式
+    isEditorMode = false;
+    // 正在打开编辑器的椭圆
+    ellipseOpenEditor: AMap.Ellipse | null = null;
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true});
     }
 
-    createEllipse() {
-        if (this.fixedPoint && this.toMouseEllipse) {
+    createDefault() {
+        if (this.pointsOfEditing.length !== 0 && this.toMouse) {
             const ellipse = new AMap.Ellipse({
-                center: this.toMouseEllipse.getCenter(),
-                radius: this.toMouseEllipse.getRadius(),
+                center: this.toMouse.getCenter(),
+                radius: this.toMouse.getRadius(),
                 strokeColor: "#1890ff",
                 fillColor: "#1890ff",
-                draggable: true
             });
-            ellipse.on("rightclick", this.removeOne);
+            ellipse.setExtData({
+                editor: new AMap.EllipseEditor(map, ellipse)
+            })
+            this.allowDefaultSomethingWhenStartEditing(ellipse);
             this.ellipses.push(ellipse);
             map.add(ellipse);
-            this.removeToMouseEllipse();
-            this.removeFixedPoint();
         }
+        this.removeToMouse();
+        this.removePointsOfEditing();
     }
 
-    createFixedPoint(e: any) {
-        if (!this.fixedPoint) {
-            this.fixedPoint = new AMap.Marker({
-                map: map,
+    createPointOfEditing(e: any) {
+        if (this.pointsOfEditing.length < 2) {
+            const point = new AMap.Marker({
                 position: e.lnglat,
                 draggable: true,
                 content: editingPointContent
-            } as AMap.MarkerOptions);
-            map.add(this.fixedPoint!);
+            });
+            // 指向鼠标的矩形不会被阻塞
+            point.on("mousemove", this.createToMouse);
+            // 可以在点上创建点
+            point.on("click", this.createPointOfEditing);
+            // 删除圆心可以取消创建
+            point.on("rightclick", this.removePointsOfEditing);
+            point.on("rightclick", this.removeToMouse);
+            this.pointsOfEditing.push(point);
+            map.add(point);
+        }
+        if (this.pointsOfEditing.length === 2) {
+            this.createDefault();
+            this.removePointsOfEditing();
         }
     }
 
-    removeFixedPoint() {
-        if (this.fixedPoint) {
-            map.remove(this.fixedPoint);
-            this.fixedPoint = null;
-        }
-    }
-
-    createToMouseEllipse(e: any) {
-        this.removeToMouseEllipse();
-        if (this.fixedPoint) {
-            const longAxisPoint = new AMap.LngLat(e.lnglat.getLng(), this.fixedPoint.getPosition()!.getLat());
-            const shortAxisPoint = new AMap.LngLat(this.fixedPoint.getPosition()!.getLng(), e.lnglat.getLat());
-            const a = this.fixedPoint.getPosition()!.distance(longAxisPoint);
-            const b = this.fixedPoint.getPosition()!.distance(shortAxisPoint);
-            this.toMouseEllipse = new AMap.Ellipse({
-                center: this.fixedPoint.getPosition()!,
+    createToMouse(e: any) {
+        this.removeToMouse();
+        if (this.pointsOfEditing.length !== 0) {
+            const centerPosition = this.pointsOfEditing[0].getPosition()!;
+            const longAxisPoint = new AMap.LngLat(e.lnglat.getLng(), centerPosition.getLat());
+            const shortAxisPoint = new AMap.LngLat(centerPosition.getLng(), e.lnglat.getLat());
+            const a = centerPosition.distance(longAxisPoint);
+            const b = centerPosition.distance(shortAxisPoint);
+            this.toMouse = new AMap.Ellipse({
+                center: centerPosition,
                 radius: [a, b],
                 strokeColor: "orange",
                 strokeStyle: "dashed",
                 fillColor: "orange"
             });
-            this.toMouseEllipse!.on("mousemove", this.createToMouseEllipse)
-            this.toMouseEllipse!.on("click", this.createEllipse);
-            map.add(this.toMouseEllipse!);
+            // 避免阻塞，实际上用只有长短轴之比很极端时才用的到
+            this.toMouse!.on("mousemove", this.createToMouse)
+            this.toMouse!.on("click", this.createDefault);
+            this.toMouse!.on("rightclick", this.removePointsOfEditing);
+            this.toMouse!.on("rightclick", this.removeToMouse);
+            map.add(this.toMouse!);
         }
     }
 
-    removeToMouseEllipse() {
-        if (this.toMouseEllipse) {
-            map.remove(this.toMouseEllipse);
-            this.toMouseEllipse = null;
-        }
+    allowDefaultSomethingWhenStartEditing(ellipse: AMap.Ellipse) {
+        ellipse.setDraggable(true);
+        ellipse.on("rightclick", this.removeOneOverlay);
+        ellipse.on("click", this.createPointOfEditing);
+        ellipse.on("mousemove", this.createToMouse);
+    }
+
+    forbidDefaultSomethingWhenStopEditing(ellipse: AMap.Ellipse) {
+        ellipse.setDraggable(false);
+        ellipse.off("rightclick", this.removeOneOverlay);
+        ellipse.off("click", this.createPointOfEditing);
+        ellipse.off("mousemove", this.createToMouse);
+    }
+
+    allowMapSomethingWhenStartEditing() {
+        mapInfos.setIsEditingAndChangeCursorStyle(true);
+        map.on("click", this.createPointOfEditing);
+        map.on("mousemove", this.createToMouse);
+        // 只创建定点时右键直接删除
+        map.on("rightclick", this.removePointsOfEditing);
+        map.on("rightclick", this.removeToMouse);
+    }
+
+    forbidMapSomethingWhenStopEditing() {
+        mapInfos.setIsEditingAndChangeCursorStyle(false);
+        map.off("click", this.createPointOfEditing);
+        map.off("mousemove", this.createToMouse);
+        map.off("rightclick", this.removePointsOfEditing);
+        map.off("rightclick", this.removeToMouse);
+    }
+
+    allowSomethingWhenStartEditing() {
+        this.ellipses.forEach((ellipse) => this.allowDefaultSomethingWhenStartEditing(ellipse));
+        this.allowMapSomethingWhenStartEditing();
+    }
+
+    forbidSomethingWhenStopEditing() {
+        this.ellipses.forEach((ellipse) => this.forbidDefaultSomethingWhenStopEditing(ellipse));
+        this.forbidMapSomethingWhenStopEditing();
     }
 
     startEditing() {
-        mapInfos.setIsEditingAndChangeCursorStyle(true);
-        map.on("click", this.createFixedPoint);
-        map.on("mousemove", this.createToMouseEllipse);
-        map.on("click", this.createEllipse);
+        if (this.isEditorMode) {
+            this.closeEditors();
+            this.isEditorMode = false;
+        }
+        this.isEditingMode = true;
+        this.allowSomethingWhenStartEditing()
     }
 
     stopEditing() {
-        this.createEllipse();
-        mapInfos.setIsEditingAndChangeCursorStyle(false);
-        map.off("click", this.createFixedPoint);
-        map.off("mousemove", this.createToMouseEllipse);
-        map.off("click", this.createEllipse);
+        this.isEditingMode = false;
+        this.createDefault();
+        this.forbidSomethingWhenStopEditing()
     }
 
-    openEditor() {
-        this.ellipses.forEach((ellipse) => {
-            const editor = new AMap.EllipseEditor(map, ellipse);
-            editor.open();
-            this.editors.push(editor);
-        });
+    allowMapSomethingWhenOpenEditors() {
+        mapInfos.setIsEditingAndChangeCursorStyle(true);
+    }
+
+    forbidMapSomethingWhenCloseEditors() {
+        mapInfos.setIsEditingAndChangeCursorStyle(false);
+    }
+
+    allowSomethingWhenOpenEditors() {
+        this.allowMapSomethingWhenOpenEditors();
+    }
+
+    forbidSomethingWhenCloseEditors() {
+        this.forbidMapSomethingWhenCloseEditors();
+    }
+
+    openEditor(e: any) {
+        this.closeEditor();
+        e.target.getExtData().editor.open();
+        this.ellipseOpenEditor = e.target;
     }
 
     closeEditor() {
-        this.editors.forEach((editor) => {
-            editor.close();
-        });
-        this.editors = [];
+        if (this.ellipseOpenEditor) {
+            this.ellipseOpenEditor.getExtData().editor.close();
+            this.ellipseOpenEditor = null;
+        }
     }
 
-    removeOne(e: any) {
+    openEditors() {
+        this.allowSomethingWhenOpenEditors();
+        if (this.isEditingMode) {
+            this.stopEditing();
+            this.isEditingMode = false;
+        }
+        this.isEditorMode = true;
+        this.ellipses.forEach((ellipse) => ellipse.on("click", this.openEditor));
+    }
+
+    closeEditors() {
+        this.forbidSomethingWhenCloseEditors();
+        this.closeEditor();
+        this.isEditorMode = false;
+        this.ellipses.forEach((ellipse) => ellipse.off("click", this.openEditor));
+    }
+
+    removePointsOfEditing() {
+        if (this.pointsOfEditing.length !== 0) {
+            map.remove(this.pointsOfEditing);
+            this.pointsOfEditing = [];
+        }
+    }
+
+    removeToMouse() {
+        if (this.toMouse) {
+            map.remove(this.toMouse);
+            this.toMouse = null;
+        }
+    }
+
+    removeAllOverlays() {
+        if (this.ellipses.length !== 0) {
+            map.remove(this.ellipses);
+            this.ellipses = [];
+        }
+    }
+
+    removeOneOverlay(e: any) {
         const index = this.ellipses.findIndex((ellipse) => ellipse === e.target);
         this.ellipses.splice(index, 1);
         map.remove(e.target);
     }
 
     removeAll() {
-        if (!this.toMouseEllipse && !this.fixedPoint && this.ellipses.length === 0 && this.editors.length === 0) {
+        if (!this.toMouse && this.pointsOfEditing.length === 0 && this.ellipses.length === 0) {
             return false;
         } else {
-            if (this.toMouseEllipse) {
-                map.remove(this.toMouseEllipse);
-                this.toMouseEllipse = null;
-            }
-            if (this.fixedPoint) {
-                map.remove(this.fixedPoint);
-                this.fixedPoint = null;
-            }
-            if (this.ellipses.length !== 0) {
-                map.remove(this.ellipses);
-                this.ellipses = [];
-            }
-            if (this.editors.length !== 0) {
-                this.closeEditor();
-                this.editors = [];
-            }
+            this.closeEditor();
+            this.removeToMouse();
+            this.removePointsOfEditing()
+            this.removeAllOverlays();
             return true;
         }
     }

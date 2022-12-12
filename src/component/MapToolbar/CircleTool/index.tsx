@@ -1,34 +1,29 @@
 import {ControlButton} from "../index";
 import {CircleEditorIcon, CircleEditToolIcon} from "../../../assets/Icon";
-import {useState} from "react";
 import {useStore} from "../../../store";
+import {observer} from "mobx-react-lite";
 
-export const CircleTool = () => {
-
-    const [isEditToolOpen, setIsEditToolOpen] = useState(false);
-    const [isEditorOpen, setIsEditorOpen] = useState(false);
+export const CircleTool = observer(() => {
 
     const {circleLayer} = useStore();
 
     function editToolSwitch() {
-        !isEditToolOpen ? circleLayer.startEditing() : circleLayer.stopEditing();
-        setIsEditToolOpen(prevState => !prevState);
+        !circleLayer.isEditingMode ? circleLayer.startEditing() : circleLayer.stopEditing();
     }
 
     function editorSwitch() {
-        !isEditorOpen ? circleLayer.openEditor() : circleLayer.closeEditor();
-        setIsEditorOpen(prevState => !prevState);
+        !circleLayer.isEditorMode ? circleLayer.openEditors() : circleLayer.closeEditors();
     }
 
     return (
         <>
             <ControlButton onClick={editToolSwitch}>
-                <CircleEditToolIcon size="24" isSelected={isEditToolOpen} />
+                <CircleEditToolIcon size="24" isSelected={circleLayer.isEditingMode} />
             </ControlButton>
             <ControlButton onClick={editorSwitch}>
-                <CircleEditorIcon size="24" isSelected={isEditorOpen} />
+                <CircleEditorIcon size="24" isSelected={circleLayer.isEditorMode} />
             </ControlButton>
         </>
 
     );
-};
+});

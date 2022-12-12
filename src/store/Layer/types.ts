@@ -1,7 +1,7 @@
 export interface Layer {
 
     // 每次开始编辑时给当前图层已经存在的矢量图形绑定监听事件
-    addEventListener?(): void;
+    // addEventListener?(): void;
 
     // 每次结束编辑时给当前图层已经存在的矢量图形移除监听事件
     removeEventListener?(): void;
@@ -13,13 +13,13 @@ export interface Layer {
     stopEditing(): void;
 
     // 打开高德地图编辑器
-    openEditor?(): void;
+    openEditors?(): void;
 
     // 关闭高德地图编辑器
-    closeEditor?(): void;
+    closeEditors?(): void;
 
     // 删除单个矢量图形
-    removeOne(e: any): void;
+    removeOneOverlay(e: any): void;
 
     // 删除当前图层内的全部矢量图形
     removeAll(): boolean;

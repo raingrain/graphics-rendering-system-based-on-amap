@@ -1,33 +1,29 @@
 import {ControlButton} from "../index";
-import {EllipseEditToolIcon, EllipseEditorIcon, CircleEditToolIcon, CircleEditorIcon} from "../../../assets/Icon";
-import {useState} from "react";
+import {EllipseEditorIcon, EllipseEditToolIcon} from "../../../assets/Icon";
 import {useStore} from "../../../store";
+import {observer} from "mobx-react-lite";
 
-export const EllipseTool = () => {
-    const [isEditToolOpen, setIsEditToolOpen] = useState(false);
-    const [isEditorOpen, setIsEditorOpen] = useState(false);
+export const EllipseTool = observer(() => {
 
     const {ellipseLayer} = useStore();
 
     function editToolSwitch() {
-        !isEditToolOpen ? ellipseLayer.startEditing() : ellipseLayer.stopEditing();
-        setIsEditToolOpen(prevState => !prevState);
+        !ellipseLayer.isEditingMode ? ellipseLayer.startEditing() : ellipseLayer.stopEditing();
     }
 
     function editorSwitch() {
-        !isEditorOpen ? ellipseLayer.openEditor() : ellipseLayer.closeEditor();
-        setIsEditorOpen(prevState => !prevState);
+        !ellipseLayer.isEditorMode ? ellipseLayer.openEditors() : ellipseLayer.closeEditors();
     }
 
     return (
         <>
             <ControlButton onClick={editToolSwitch}>
-                <EllipseEditToolIcon size="24" isSelected={isEditToolOpen} />
+                <EllipseEditToolIcon size="24" isSelected={ellipseLayer.isEditingMode} />
             </ControlButton>
             <ControlButton onClick={editorSwitch}>
-                <EllipseEditorIcon size="24" isSelected={isEditorOpen} />
+                <EllipseEditorIcon size="24" isSelected={ellipseLayer.isEditorMode} />
             </ControlButton>
         </>
 
     );
-}
+});

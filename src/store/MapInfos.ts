@@ -1,5 +1,11 @@
 import {makeAutoObservable} from "mobx";
 import {map} from "../component/MapScreen";
+import {pointLayer} from "./Layer/PointLayer";
+import {polylineLayer} from "./Layer/PolylineLayer";
+import {polygonLayer} from "./Layer/PolygonLayer";
+import {rectLayer} from "./Layer/RectLayer";
+import {circleLayer} from "./Layer/CircleLayer";
+import {ellipseLayer} from "./Layer/EllipseLayer";
 
 class MapInfos {
     isEditing = false;
@@ -14,6 +20,10 @@ class MapInfos {
     setIsEditingAndChangeCursorStyle(isEditing: boolean) {
         this.isEditing = isEditing;
         this.isEditing ? map.setDefaultCursor("crosshair") : map.setDefaultCursor("default");
+    }
+
+    removeAll() {
+        return !(!pointLayer.removeAll() && !polylineLayer.removeAll() && !polygonLayer.removeAll() && !rectLayer.removeAll() && !circleLayer.removeAll() && !ellipseLayer.removeAll());
     }
 
     setZoom(zoom: number) {

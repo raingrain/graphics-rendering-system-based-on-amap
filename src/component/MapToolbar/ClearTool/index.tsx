@@ -5,12 +5,13 @@ import {message} from "antd";
 
 export const ClearTool = () => {
 
-    const {pointLayer, polylineLayer, polygonLayer, rectLayer, circleLayer, ellipseLayer} = useStore();
+    const {mapInfos, pointLayer, polylineLayer, polygonLayer, rectLayer, circleLayer, ellipseLayer} = useStore();
 
     const [messageApi, contextHolder] = message.useMessage();
 
     function handleClick() {
-        pointLayer.removeAll() || polylineLayer.removeAll() || polygonLayer.removeAll() || rectLayer.removeAll() || circleLayer.removeAll() || ellipseLayer.removeAll() ? messageApi.success({
+
+        mapInfos.removeAll() ? messageApi.success({
             content: "全部清除成功",
             duration: 2
         }) : messageApi.error({

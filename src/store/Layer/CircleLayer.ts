@@ -7,128 +7,217 @@ import {Layer} from "./types";
 class CircleLayer implements Layer {
 
     circles: AMap.Circle[] = [];
-    fixedPoint: AMap.Marker | null = null;
-    toMouseCircle: AMap.Circle | null = null;
-    editors: any[] = [];
+    pointsOfEditing: AMap.Marker[] = [];
+    toMouse: AMap.Circle | null = null;
+    // 编辑模式
+    isEditingMode = false;
+    // 编辑器模式
+    isEditorMode = false;
+    // 正在打开编辑器的圆
+    circleOpenEditor: AMap.Circle | null = null;
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true});
     }
 
-    createCircle() {
-        if (this.fixedPoint && this.toMouseCircle) {
+    createDefault() {
+        if (this.pointsOfEditing.length !== 0 && this.toMouse) {
             const circle = new AMap.Circle({
-                center: this.toMouseCircle.getCenter(),
-                radius: this.toMouseCircle.getRadius(),
+                center: this.toMouse.getCenter(),
+                radius: this.toMouse.getRadius(),
                 strokeColor: "#1890ff",
                 fillColor: "#1890ff"
             });
-            circle.on("rightclick", this.removeOne);
+            circle.setExtData({
+                editor: new AMap.CircleEditor(map, circle)
+            })
+            this.allowDefaultSomethingWhenStartEditing(circle!);
             this.circles.push(circle);
             map.add(circle);
-            this.removeToMouseCircle();
-            this.removeFixedPoint();
         }
+        this.removePointsOfEditing();
+        this.removeToMouse();
     }
 
-    createFixedPoint(e: any) {
-        if (!this.fixedPoint) {
-            this.fixedPoint = new AMap.Marker({
-                map: map,
+    createPointOfEditing(e: any) {
+        if (this.pointsOfEditing.length < 2) {
+            const point = new AMap.Marker({
                 position: e.lnglat,
                 draggable: true,
                 content: editingPointContent
-            } as AMap.MarkerOptions);
-            map.add(this.fixedPoint!);
+            });
+            // 指向鼠标的矩形不会被阻塞
+            point.on("mousemove", this.createToMouse);
+            // 可以在点上创建点
+            point.on("click", this.createPointOfEditing);
+            // 删除圆心可以取消创建
+            point.on("rightclick", this.removePointsOfEditing);
+            point.on("rightclick", this.removeToMouse);
+            this.pointsOfEditing.push(point)
+            map.add(point);
+        }
+        // 不像多边形的线的点数是不确定的，两点可以确定一个圆
+        if (this.pointsOfEditing.length === 2) {
+            this.createDefault();
+            this.removePointsOfEditing();
         }
     }
 
-    createToMouseCircle(e: any) {
-        this.removeToMouseCircle();
-        if (this.fixedPoint) {
-            this.toMouseCircle = new AMap.Circle({
-                center: this.fixedPoint.getPosition()!,
-                radius: e.lnglat.distance(this.fixedPoint.getPosition()!),
+    createToMouse(e: any) {
+        this.removeToMouse();
+        if (this.pointsOfEditing.length !== 0) {
+            this.toMouse = new AMap.Circle({
+                center: this.pointsOfEditing[0].getPosition()!,
+                radius: e.lnglat.distance(this.pointsOfEditing[0].getPosition()!),
                 strokeColor: "orange",
                 strokeStyle: "dashed",
                 fillColor: "orange"
             });
-            this.toMouseCircle!.on("mousemove", this.createToMouseCircle);
-            this.toMouseCircle!.on("click", this.createCircle);
-            map.add(this.toMouseCircle!);
+            this.toMouse!.on("mousemove", this.createToMouse);
+            this.toMouse!.on("click", this.createDefault);
+            this.toMouse!.on("rightclick", this.removePointsOfEditing);
+            this.toMouse!.on("rightclick", this.removeToMouse);
+            map.add(this.toMouse!);
         }
     }
 
-    removeFixedPoint() {
-        if (this.fixedPoint) {
-            map.remove(this.fixedPoint);
-            this.fixedPoint = null;
-        }
+    allowDefaultSomethingWhenStartEditing(circle: AMap.Circle) {
+        circle.setDraggable(true);
+        circle.on("rightclick", this.removeOneOverlay);
+        circle.on("click", this.createPointOfEditing);
+        circle.on("mousemove", this.createToMouse);
     }
 
-    removeToMouseCircle() {
-        if (this.toMouseCircle) {
-            map.remove(this.toMouseCircle);
-            this.toMouseCircle = null;
-        }
+    forbidDefaultSomethingWhenStopEditing(circle: AMap.Circle) {
+        circle.setDraggable(false);
+        circle.off("rightclick", this.removeOneOverlay);
+        circle.off("click", this.createPointOfEditing);
+        circle.off("mousemove", this.createToMouse);
+    }
+
+    allowMapSomethingWhenStartEditing() {
+        mapInfos.setIsEditingAndChangeCursorStyle(true);
+        map.on("click", this.createPointOfEditing);
+        map.on("mousemove", this.createToMouse);
+        // 只创建定点时右键直接删除
+        map.on("rightclick", this.removePointsOfEditing);
+        map.on("rightclick", this.removeToMouse);
+    }
+
+    forbidMapSomethingWhenStopEditing() {
+        mapInfos.setIsEditingAndChangeCursorStyle(false);
+        map.off("click", this.createPointOfEditing);
+        map.off("mousemove", this.createToMouse);
+        map.off("rightclick", this.removePointsOfEditing);
+        map.off("rightclick", this.removeToMouse);
+    }
+
+    allowSomethingWhenStartEditing() {
+        this.circles.forEach((circle) => this.allowDefaultSomethingWhenStartEditing(circle));
+        this.allowMapSomethingWhenStartEditing();
+    }
+
+    forbidSomethingWhenStopEditing() {
+        this.circles.forEach((circle) => this.forbidDefaultSomethingWhenStopEditing(circle));
+        this.forbidMapSomethingWhenStopEditing();
     }
 
     startEditing() {
-        mapInfos.setIsEditingAndChangeCursorStyle(true);
-        map.on("click", this.createFixedPoint);
-        map.on("mousemove", this.createToMouseCircle);
-        map.on("click", this.createCircle);
+        if (this.isEditorMode) {
+            this.closeEditors();
+            this.isEditorMode = false;
+        }
+        this.isEditingMode = true;
+        this.allowSomethingWhenStartEditing()
     }
 
     stopEditing() {
-        this.createCircle();
-        mapInfos.setIsEditingAndChangeCursorStyle(false);
-        map.off("click", this.createFixedPoint);
-        map.off("mousemove", this.createToMouseCircle);
-        map.off("click", this.createCircle);
+        this.isEditingMode = false;
+        this.createDefault();
+        this.forbidSomethingWhenStopEditing()
     }
 
-    openEditor() {
-        this.circles.forEach((circle) => {
-            const editor = new AMap.CircleEditor(map, circle);
-            editor.open();
-            this.editors.push(editor);
-        });
+    allowMapSomethingWhenOpenEditors() {
+        mapInfos.setIsEditingAndChangeCursorStyle(true);
+    }
+
+    forbidMapSomethingWhenCloseEditors() {
+        mapInfos.setIsEditingAndChangeCursorStyle(false);
+    }
+
+    allowSomethingWhenOpenEditors() {
+        this.allowMapSomethingWhenOpenEditors();
+    }
+
+    forbidSomethingWhenCloseEditors() {
+        this.forbidMapSomethingWhenCloseEditors();
+    }
+
+    openEditor(e: any) {
+        this.closeEditor();
+        e.target.getExtData().editor.open();
+        this.circleOpenEditor = e.target;
     }
 
     closeEditor() {
-        this.editors.forEach((editor) => {
-            editor.close();
-        });
-        this.editors = [];
+        if (this.circleOpenEditor) {
+            this.circleOpenEditor.getExtData().editor.close();
+            this.circleOpenEditor = null;
+        }
     }
 
-    removeOne(e: any) {
+    openEditors() {
+        this.allowSomethingWhenOpenEditors();
+        if (this.isEditingMode) {
+            this.stopEditing();
+            this.isEditingMode = false;
+        }
+        this.isEditorMode = true;
+        this.circles.forEach((circle) => circle.on("click", this.openEditor));
+    }
+
+    closeEditors() {
+        this.forbidSomethingWhenCloseEditors();
+        this.closeEditor();
+        this.isEditorMode = false;
+        this.circles.forEach((circle) => circle.off("click", this.openEditor));
+    }
+
+    removePointsOfEditing() {
+        if (this.pointsOfEditing.length !== 0) {
+            map.remove(this.pointsOfEditing);
+            this.pointsOfEditing = [];
+        }
+    }
+
+    removeToMouse() {
+        if (this.toMouse) {
+            map.remove(this.toMouse);
+            this.toMouse = null;
+        }
+    }
+
+    removeAllOverlays() {
+        if (this.circles.length !== 0) {
+            map.remove(this.circles);
+            this.circles = [];
+        }
+    }
+
+    removeOneOverlay(e: any) {
         const index = this.circles.findIndex((circle) => circle === e.target);
         this.circles.splice(index, 1);
         map.remove(e.target);
     }
 
     removeAll() {
-        if (!this.toMouseCircle && !this.fixedPoint && this.circles.length === 0 && this.editors.length === 0) {
+        if (!this.toMouse && this.pointsOfEditing.length === 0 && this.circles.length === 0) {
             return false;
         } else {
-            if (this.toMouseCircle) {
-                map.remove(this.toMouseCircle);
-                this.toMouseCircle = null;
-            }
-            if (this.fixedPoint) {
-                map.remove(this.fixedPoint);
-                this.fixedPoint = null;
-            }
-            if (this.circles.length !== 0) {
-                map.remove(this.circles);
-                this.circles = [];
-            }
-            if (this.editors.length !== 0) {
-                this.closeEditor();
-                this.editors = [];
-            }
+            this.closeEditor();
+            this.removePointsOfEditing()
+            this.removeToMouse();
+            this.removeAllOverlays();
             return true;
         }
     }
