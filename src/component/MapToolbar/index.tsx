@@ -1,7 +1,4 @@
 import styled from "styled-components";
-import {GaoDeFeaturesTool} from "./GaoDeFeaturesTool";
-import {GaoDeLayerTool} from "./GaoDeLayerTool";
-import {MapStyleTool} from "./MapStyleTool";
 import {PointTool} from "./PointTool";
 import {ClearTool} from "./ClearTool";
 import {PolylineTool} from "./PolylineTool";
@@ -16,18 +13,16 @@ export const MapToolbar = () => {
             display: "flex",
             position: "absolute",
             top: "1rem",
-            left: "400px"
+            left: "50%",
+            transform: "translateX(-50%)"
         }}>
-            <EllipseTool/>
             <ClearTool/>
+            <EllipseTool/>
             <CircleTool/>
             <RectTool/>
             <PolygonTool/>
             <PolylineTool/>
             <PointTool />
-            <GaoDeFeaturesTool />
-            <GaoDeLayerTool />
-            <MapStyleTool />
         </div>
     );
 };

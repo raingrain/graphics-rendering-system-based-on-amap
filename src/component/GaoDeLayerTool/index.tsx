@@ -2,22 +2,26 @@
 import {ChangeEvent} from "react";
 
 // 样式按钮图标
-import {GaoDeLayerToolIcon} from "../../../assets/Icon";
+import {GaoDeLayerToolIcon} from "../../assets/Icon";
 // 导入气泡卡片控件
 import {Popover} from "antd";
 import styled from "styled-components";
 
 // 图层相关属性和方法
-import {useStore} from "../../../store";
-import {map} from "../../MapScreen";
-import {ControlButton} from "../index";
+import {useStore} from "../../store";
+import {map} from "../MapScreen";
+import {ControlButton} from "../MapToolbar";
 
 
 export const GaoDeLayerTool = () => {
     return (
-        <div>
+        <div style={{
+            position: "absolute",
+            right: "1rem",
+            top: "31vh"
+        }}>
             <Popover
-                placement="bottom"
+                placement="left"
                 content={<PopoverContent />}
                 title={<PopoverTitle />}
                 trigger="click"

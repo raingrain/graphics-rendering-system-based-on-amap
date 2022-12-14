@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import "@amap/amap-jsapi-types";
 
-import {features} from "./MapToolbar/GaoDeFeaturesTool";
+import {features, GaoDeFeaturesTool} from "./GaoDeFeaturesTool";
 
 // import {OperationPanel} from "./OperationPanel/OperationPanel";
 
@@ -15,6 +15,8 @@ import {useStore} from "../store";
 import {MapToolbar} from "./MapToolbar";
 
 import {observer} from "mobx-react-lite";
+import {GaoDeLayerTool} from "./GaoDeLayerTool";
+import {MapStyleTool} from "./MapStyleTool";
 
 
 let AMap: any;
@@ -105,6 +107,9 @@ const MapScreen = observer(() => {
             {/*地图容器，需要一个ID*/}
             <div id="container" style={{position: "absolute", inset: "0 0 20px 0"}}></div>
             <MapToolbar />
+            <GaoDeFeaturesTool/>
+            <GaoDeLayerTool/>
+            <MapStyleTool/>
             <BottomInfoPanel />
         </div>
     );

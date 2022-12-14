@@ -1,9 +1,9 @@
 // 地图实例
-import {map} from "../../MapScreen";
+import {map} from "../MapScreen";
 // 鹰眼控件设置函数
 
 // 样式按钮图标
-import {MapStyleToolIcon} from "../../../assets/Icon";
+import {MapStyleToolIcon} from "../../assets/Icon";
 // 导入气泡卡片控件
 import {Popover} from "antd";
 import styled from "styled-components";
@@ -13,29 +13,29 @@ import {Style} from "./types";
 
 // 导入样式对应图片，不能以src直接插入image标签（大坑）
 // @ts-ignore
-import normal from "../../../assets/mapStyleImage/normal.png";
+import normal from "../../assets/mapStyleImage/normal.png";
 // @ts-ignore
-import dark from "../../../assets/mapStyleImage/dark.png";
+import dark from "../../assets/mapStyleImage/dark.png";
 // @ts-ignore
-import graffiti from "../../../assets/mapStyleImage/graffiti.png";
+import graffiti from "../../assets/mapStyleImage/graffiti.png";
 // @ts-ignore
-import light from "../../../assets/mapStyleImage/light.png";
+import light from "../../assets/mapStyleImage/light.png";
 // @ts-ignore
-import wine from "../../../assets/mapStyleImage/wine.png";
+import wine from "../../assets/mapStyleImage/wine.png";
 // @ts-ignore
-import whitesmoke from "../../../assets/mapStyleImage/whitesmoke.png";
+import whitesmoke from "../../assets/mapStyleImage/whitesmoke.png";
 // @ts-ignore
-import fresh from "../../../assets/mapStyleImage/fresh.png";
+import fresh from "../../assets/mapStyleImage/fresh.png";
 // @ts-ignore
-import grey from "../../../assets/mapStyleImage/grey.png";
+import grey from "../../assets/mapStyleImage/grey.png";
 // @ts-ignore
-import macaron from "../../../assets/mapStyleImage/macaron.png";
+import macaron from "../../assets/mapStyleImage/macaron.png";
 // @ts-ignore
-import blue from "../../../assets/mapStyleImage/blue.png";
+import blue from "../../assets/mapStyleImage/blue.png";
 // @ts-ignore
-import darkblue from "../../../assets/mapStyleImage/darkblue.png";
-import {useStore} from "../../../store";
-import {ControlButton} from "../index";
+import darkblue from "../../assets/mapStyleImage/darkblue.png";
+import {useStore} from "../../store";
+import {ControlButton} from "../MapToolbar";
 
 
 // 样式数据
@@ -104,9 +104,13 @@ const styles: Style[] = [
 export const MapStyleTool = () => {
 
     return (
-        <div>
+        <div style={{
+        position: "absolute",
+            right: "1rem",
+            top: "37vh"
+    }}>
             <Popover
-                placement="bottom"
+                placement="left"
                 content={<PopoverContent />}
                 title={<PopoverTitle />}
                 trigger="click"
@@ -177,8 +181,8 @@ const Content = styled.div`
         div {
             font-size: .5rem;
             display: flex;
-            justify-content: centerOfEditing;
-            align-items: centerOfEditing;
+            justify-content: center;
+            align-items: center;
         }
     }
 `;
