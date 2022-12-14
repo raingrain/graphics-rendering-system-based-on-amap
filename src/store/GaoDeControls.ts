@@ -1,5 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {AMap, map} from "../component/MapScreen";
+import {editingPointContent, locationPointContent} from "./Layer/PointLayer";
 
 // 控件类型，初始化为null
 type ControlType = AMap.Control | null;
@@ -9,6 +10,7 @@ class GaoDeControls {
     toolBar: ControlType = null;
     scale: ControlType = null;
     hawkEye: ControlType = null;
+    location: ControlType = null;
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true});
@@ -18,8 +20,8 @@ class GaoDeControls {
         const controlBar = new AMap.ControlBar({
             // 设置3D控件
             position: {
-                right: "0px",
-                top: "0px"
+                left: "0",
+                top: "0"
             },
             showControlButton: true,
             offset: [0, 0],
@@ -33,8 +35,8 @@ class GaoDeControls {
     setToolBar(config = {}) {
         const toolBar = new AMap.ToolBar({
             position: {
-                bottom: "35vh",
-                right: "10px"
+                top: "10vh",
+                right: "1rem"
             },
             offset: [0, 0],
             ...config
@@ -48,7 +50,7 @@ class GaoDeControls {
         const scale = new AMap.Scale({
             position: {
                 right: "20vw",
-                bottom: "30px"
+                bottom: "1rem"
             },
             ...config
         });
@@ -77,11 +79,23 @@ class GaoDeControls {
         map.addControl(this.hawkEye!);
     }
 
+    setLocation(config = {}) {
+        const location = new AMap.Geolocation({
+            position: "RT",
+            showCircle: false,
+            ...config
+        });
+        this.location && map.removeControl(this.location);
+        this.location = location;
+        map.addControl(this.location!);
+    }
+
     initialControls() {
         this.setControlBar();
         this.setToolBar();
         this.setScale();
         this.setHawkEye();
+        this.setLocation();
     }
 }
 

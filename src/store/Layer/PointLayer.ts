@@ -10,6 +10,8 @@ import {circleLayer} from "./CircleLayer";
 
 export const defaultPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: #1890ff; width: .75rem; height: .75rem; transform: translate(-50%, -50%)"></div>`;
 export const editingPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: orange; width: 1rem; height: 1rem; transform: translate(-50%, -50%)"></div>`;
+export const locationPointContent = `<div style="border: 2px solid white; border-radius: 50%; background-color: red; width: 1rem; height: 1rem; transform: translate(-50%, -50%)"></div>`;
+
 
 class PointLayer implements Layer {
 
