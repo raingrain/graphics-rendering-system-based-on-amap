@@ -8,7 +8,7 @@ import styled from "styled-components";
 import {ChangeEvent} from "react";
 
 // 地图实例
-import {map} from "../../MapScreen";
+import {map} from "../../../layout/MapLayout/MapContainer";
 // 要素类类型
 import {Feature} from "./types";
 import {ControlButton} from "../OverlayTool";

@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {AMap, map} from "../component/MapScreen";
+import {AMap, map} from "../layout/MapLayout/MapContainer";
 import {editingPointContent, locationPointContent} from "./Layer/PointLayer";
 
 // 控件类型，初始化为null

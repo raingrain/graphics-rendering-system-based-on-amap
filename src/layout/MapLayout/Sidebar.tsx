@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import {GaoDeFeaturesTool} from "./ToolSet/GaoDeFeaturesTool";
-import {GaoDeLayerTool} from "./ToolSet/GaoDeLayerTool";
-import {MapStyleTool} from "./ToolSet/MapStyleTool";
-import {PointTool, PolylineTool, PolygonTool, RectTool, CircleTool, EllipseTool, ClearTool} from "./ToolSet/OverlayTool";
+import {GaoDeFeaturesTool} from "../../component/ToolSet/GaoDeFeaturesTool";
+import {GaoDeLayerTool} from "../../component/ToolSet/GaoDeLayerTool";
+import {MapStyleTool} from "../../component/ToolSet/MapStyleTool";
+import {PointTool, PolylineTool, PolygonTool, RectTool, CircleTool, EllipseTool, ClearTool} from "../../component/ToolSet/OverlayTool";
 
 export const Sidebar = () => {
     return (

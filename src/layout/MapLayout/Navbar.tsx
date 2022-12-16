@@ -1,7 +1,7 @@
 import {GithubOutlined} from "@ant-design/icons";
-import {AMapIcon, ReactIcon, TSIcon} from "../assets/Icon";
+import {AMapIcon, ReactIcon, TSIcon} from "../../assets/Icon";
 
-export function NavBar() {
+export function Navbar() {
     return (
         <nav className="grid grid-cols-3" style={{
             width: "100vw",

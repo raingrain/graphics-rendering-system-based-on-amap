@@ -3,13 +3,13 @@ import {useEffect} from "react";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import "@amap/amap-jsapi-types";
 
-import {features} from "./ToolSet/GaoDeFeaturesTool";
+import {features} from "../../component/ToolSet/GaoDeFeaturesTool";
 
 
 import {message} from "antd";
 
 import {BottomInfoPanel} from "./BottomInfoPanel";
-import {useStore} from "../store";
+import {useStore} from "../../store";
 
 import {observer} from "mobx-react-lite";
 import {Sidebar} from "./Sidebar";
@@ -18,7 +18,7 @@ import {Sidebar} from "./Sidebar";
 let AMap: any;
 let map: AMap.Map;
 
-const MapScreen = observer(() => {
+const MapContainer = observer(() => {
 
     const {mapInfos, gaoDeLayers, gaoDeControls} = useStore();
 
@@ -98,15 +98,13 @@ const MapScreen = observer(() => {
     }, []);
 
     return (
-        <div style={{position: "absolute", "inset": "50px 0 0"}}>
-            <Sidebar/>
+        <>
             {contextHolder}
             {/*地图容器，需要一个ID*/}
             <div id="container" style={{position: "absolute", inset: "0 0 1.5rem 2rem"}}></div>
-            <BottomInfoPanel />
-        </div>
+        </>
     );
 });
 
 
-export {MapScreen, AMap, map};
+export {MapContainer, AMap, map};
