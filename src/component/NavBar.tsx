@@ -1,5 +1,5 @@
 import {GithubOutlined} from "@ant-design/icons";
-import {AMapIcon, ReactIcon, TSIcon} from "../../assets/Icon";
+import {AMapIcon, ReactIcon, TSIcon} from "../assets/Icon";
 
 export function NavBar() {
     return (

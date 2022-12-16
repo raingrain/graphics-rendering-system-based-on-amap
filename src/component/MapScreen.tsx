@@ -3,20 +3,16 @@ import {useEffect} from "react";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import "@amap/amap-jsapi-types";
 
-import {features, GaoDeFeaturesTool} from "./GaoDeFeaturesTool";
+import {features} from "./ToolSet/GaoDeFeaturesTool";
 
-// import {OperationPanel} from "./OperationPanel/OperationPanel";
 
 import {message} from "antd";
-import styled from "styled-components";
 
 import {BottomInfoPanel} from "./BottomInfoPanel";
 import {useStore} from "../store";
-import {MapToolbar} from "./MapToolbar";
 
 import {observer} from "mobx-react-lite";
-import {GaoDeLayerTool} from "./GaoDeLayerTool";
-import {MapStyleTool} from "./MapStyleTool";
+import {Sidebar} from "./Sidebar";
 
 
 let AMap: any;
@@ -24,7 +20,7 @@ let map: AMap.Map;
 
 const MapScreen = observer(() => {
 
-    const {mapInfos, gaoDeLayers, gaoDeControls, pointLayer} = useStore();
+    const {mapInfos, gaoDeLayers, gaoDeControls} = useStore();
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -102,14 +98,11 @@ const MapScreen = observer(() => {
     }, []);
 
     return (
-        <div style={{"position": "absolute", "inset": "50px 0 0"}}>
+        <div style={{position: "absolute", "inset": "50px 0 0"}}>
+            <Sidebar/>
             {contextHolder}
             {/*地图容器，需要一个ID*/}
-            <div id="container" style={{position: "absolute", inset: "0 0 20px 0"}}></div>
-            <MapToolbar />
-            <GaoDeFeaturesTool/>
-            <GaoDeLayerTool/>
-            <MapStyleTool/>
+            <div id="container" style={{position: "absolute", inset: "0 0 1.5rem 2rem"}}></div>
             <BottomInfoPanel />
         </div>
     );
