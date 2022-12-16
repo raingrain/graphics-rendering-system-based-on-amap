@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {AMap} from "../layout/MapLayout/MapContainer";
+import {AMap} from "../layout/MapPageLayout/MapContainer";
 
 // 单个图层的类型，初始化为null
 type Layer = AMap.TileLayer | AMap.BuildingLayer | null;

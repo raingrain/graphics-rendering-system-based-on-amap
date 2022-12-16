@@ -1,5 +1,5 @@
 // 地图实例
-import {map} from "../../../layout/MapLayout/MapContainer";
+import {map} from "../../../layout/MapPageLayout/MapContainer";
 // 鹰眼控件设置函数
 
 // 样式按钮图标

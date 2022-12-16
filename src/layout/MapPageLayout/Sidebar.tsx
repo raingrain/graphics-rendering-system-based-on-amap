@@ -29,7 +29,7 @@ export const Sidebar = () => {
 const SidebarDiv = styled.div`
     position: absolute;
     left: 0;
-    top: 0;
+    top: 3rem;
     bottom: 1.5rem;
     width: 2rem;
     display: flex;

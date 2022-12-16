@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {AMap, map} from "../../layout/MapLayout/MapContainer";
+import {AMap, map} from "../../layout/MapPageLayout/MapContainer";
 import {mapInfos} from "../MapInfos";
 import {editingPointContent, pointLayer} from "./PointLayer";
 import {Layer} from "./types";

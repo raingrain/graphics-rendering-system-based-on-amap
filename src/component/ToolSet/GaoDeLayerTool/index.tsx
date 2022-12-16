@@ -9,7 +9,7 @@ import styled from "styled-components";
 
 // 图层相关属性和方法
 import {useStore} from "../../../store";
-import {map} from "../../../layout/MapLayout/MapContainer";
+import {map} from "../../../layout/MapPageLayout/MapContainer";
 import {ControlButton} from "../OverlayTool";
 
 

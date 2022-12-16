@@ -4,8 +4,9 @@ import {AMapIcon, ReactIcon, TSIcon} from "../../assets/Icon";
 export function Navbar() {
     return (
         <nav className="grid grid-cols-3" style={{
+            position: "absolute",
             width: "100vw",
-            height: "50px"
+            height: "3rem"
         }}>
             {/*占2/3和3/3*/}
             <div className="col-start-2 col-end-3 mx-auto grid grid-rows-2">

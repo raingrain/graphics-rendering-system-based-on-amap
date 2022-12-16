@@ -101,7 +101,10 @@ const MapContainer = observer(() => {
         <>
             {contextHolder}
             {/*地图容器，需要一个ID*/}
-            <div id="container" style={{position: "absolute", inset: "0 0 1.5rem 2rem"}}></div>
+            <div id="container" style={{
+                position: "absolute",
+                inset: "3rem 0 1.5rem 2rem"
+            }}></div>
         </>
     );
 });

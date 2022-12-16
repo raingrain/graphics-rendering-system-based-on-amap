@@ -19,8 +19,8 @@ const Panel = styled.div`
     position: absolute;
     bottom: 0;
     right: 0;
-    left: 250px;
-    height: 20px;
+    left: 0;
+    height: 1.5rem;
     display: flex;
     justify-content: flex-end;
     align-items: center;

@@ -1,10 +1,10 @@
 import {createBrowserRouter} from "react-router-dom";
-import {Map} from "../pages/Map";
+import {MapPage} from "../pages/MapPage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Map />
+        element: <MapPage />
     }
     // {
     //     path: '/map',
