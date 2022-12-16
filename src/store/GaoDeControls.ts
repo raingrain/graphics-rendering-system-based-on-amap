@@ -1,6 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {AMap, map} from "../layout/MapLayout/MapContainer";
-import {editingPointContent, locationPointContent} from "./Layer/PointLayer";
+import {AMap, map} from "../layout/MapPageLayout/MapContainer";
 
 // 控件类型，初始化为null
 type ControlType = AMap.Control | null;
@@ -19,11 +18,7 @@ class GaoDeControls {
     setControlBar(config = {}) {
         const controlBar = new AMap.ControlBar({
             // 设置3D控件
-            position: {
-                left: "0",
-                top: "0"
-            },
-            showControlButton: true,
+            position: "RT",
             offset: [0, 0],
             ...config
         });
@@ -35,8 +30,8 @@ class GaoDeControls {
     setToolBar(config = {}) {
         const toolBar = new AMap.ToolBar({
             position: {
-                top: "10vh",
-                right: "1rem"
+                bottom: "32vh",
+                right: "2vh"
             },
             offset: [0, 0],
             ...config
@@ -81,7 +76,7 @@ class GaoDeControls {
 
     setLocation(config = {}) {
         const location = new AMap.Geolocation({
-            position: "RT",
+            position: "LB",
             showCircle: false,
             ...config
         });
