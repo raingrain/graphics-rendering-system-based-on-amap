@@ -1,5 +1,5 @@
 // 样式按钮图标
-import {GaoDeFeaturesToolIcon} from "../../assets/Icon";
+import {GaoDeFeaturesToolIcon} from "../../../assets/Icon";
 // 导入气泡卡片控件
 import {Popover} from "antd";
 import styled from "styled-components";
@@ -8,10 +8,10 @@ import styled from "styled-components";
 import {ChangeEvent} from "react";
 
 // 地图实例
-import {map} from "../MapScreen";
+import {map} from "../../MapScreen";
 // 要素类类型
 import {Feature} from "./types";
-import {ControlButton} from "../MapToolbar";
+import {ControlButton} from "../OverlayTool";
 
 // 地图要素及其对应的中文名
 export const features: Feature[] = [
@@ -40,9 +40,9 @@ export const features: Feature[] = [
 export const GaoDeFeaturesTool = () => {
     return (
         <div style={{
-            position: "absolute",
-            right: "1rem",
-            top: "25vh"
+            // position: "absolute",
+            // right: "1rem",
+            // top: "25vh"
         }}>
             <Popover
                 placement="left"
