@@ -10,7 +10,6 @@ import {ellipseLayer} from "./Layer/EllipseLayer";
 class MapInfos {
     isEditing = false;
     zoom = 13;
-    centerPoint = [121.451170, 31.036050];
     mouseLngLat = [121.451170, 31.036050];
 
     constructor() {
@@ -46,10 +45,6 @@ class MapInfos {
         this.zoom = zoom;
     }
 
-    setCenterPoint(centerPoint: [number, number]) {
-        this.centerPoint = centerPoint;
-    }
-
     setMouseLngLat(mouseLngLat: [number, number]) {
         this.mouseLngLat = mouseLngLat;
     }
@@ -60,17 +55,7 @@ class MapInfos {
         });
 
         map.on("mousemove", (e) => {
-            this.setMouseLngLat([e.lnglat.lng, e.lnglat.lat]);
-        });
-
-        map.on("zoomchange", () => {
-            const center = map.getCenter();
-            this.setCenterPoint([center.lng, center.lat]);
-        });
-
-        map.on("dragging", () => {
-            const center = map.getCenter();
-            this.setCenterPoint([center.lng, center.lat]);
+            this.setMouseLngLat([e.lnglat.getLng(), e.lnglat.getLat()]);
         });
     }
 }

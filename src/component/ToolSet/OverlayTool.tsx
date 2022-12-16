@@ -21,7 +21,7 @@ import {rectLayer} from "../../store/Layer/RectLayer";
 import {circleLayer} from "../../store/Layer/CircleLayer";
 import {ellipseLayer} from "../../store/Layer/EllipseLayer";
 import {message} from "antd";
-import styled from "styled-components";
+import {iconSize, ToolButton} from "../../layout/MapPageLayout/Sidebar";
 
 function editToolSwitch(layer: any) {
     !layer.isEditingMode && mapInfos.closeAllLayers();
@@ -35,21 +35,21 @@ function editorSwitch(layer: any) {
 
 export const PointTool = observer(() => {
     return (
-        <ControlButton onClick={() => editToolSwitch(pointLayer)}>
-            <PointEditToolIcon size="24" isSelected={pointLayer.isEditingMode} />
-        </ControlButton>
+        <ToolButton onClick={() => editToolSwitch(pointLayer)}>
+            <PointEditToolIcon size={iconSize} isSelected={pointLayer.isEditingMode} />
+        </ToolButton>
     );
 });
 
 export const PolylineTool = observer(() => {
     return (
         <>
-            <ControlButton onClick={() => editToolSwitch(polylineLayer)}>
-                <PolylineEditToolIcon size="24" isSelected={polylineLayer.isEditingMode} />
-            </ControlButton>
-            <ControlButton onClick={() => editorSwitch(polylineLayer)}>
-                <PolylineEditorIcon size="24" isSelected={polylineLayer.isEditorMode} />
-            </ControlButton>
+            <ToolButton onClick={() => editToolSwitch(polylineLayer)}>
+                <PolylineEditToolIcon size={iconSize} isSelected={polylineLayer.isEditingMode} />
+            </ToolButton>
+            <ToolButton onClick={() => editorSwitch(polylineLayer)}>
+                <PolylineEditorIcon size={iconSize} isSelected={polylineLayer.isEditorMode} />
+            </ToolButton>
         </>
     );
 });
@@ -57,12 +57,12 @@ export const PolylineTool = observer(() => {
 export const PolygonTool = observer(() => {
     return (
         <>
-            <ControlButton onClick={() => editToolSwitch(polygonLayer)}>
-                <PolygonEditToolIcon size="24" isSelected={polygonLayer.isEditingMode} />
-            </ControlButton>
-            <ControlButton onClick={() => editorSwitch(polygonLayer)}>
-                <PolygonEditorIcon size="24" isSelected={polygonLayer.isEditorMode} />
-            </ControlButton>
+            <ToolButton onClick={() => editToolSwitch(polygonLayer)}>
+                <PolygonEditToolIcon size={iconSize} isSelected={polygonLayer.isEditingMode} />
+            </ToolButton>
+            <ToolButton onClick={() => editorSwitch(polygonLayer)}>
+                <PolygonEditorIcon size={iconSize} isSelected={polygonLayer.isEditorMode} />
+            </ToolButton>
         </>
     );
 });
@@ -70,12 +70,12 @@ export const PolygonTool = observer(() => {
 export const RectTool = observer(() => {
     return (
         <>
-            <ControlButton onClick={() => editToolSwitch(rectLayer)}>
-                <RectEditToolIcon size="24" isSelected={rectLayer.isEditingMode} />
-            </ControlButton>
-            <ControlButton onClick={() => editorSwitch(rectLayer)}>
-                <RectEditorIcon size="24" isSelected={rectLayer.isEditorMode} />
-            </ControlButton>
+            <ToolButton onClick={() => editToolSwitch(rectLayer)}>
+                <RectEditToolIcon size={iconSize} isSelected={rectLayer.isEditingMode} />
+            </ToolButton>
+            <ToolButton onClick={() => editorSwitch(rectLayer)}>
+                <RectEditorIcon size={iconSize} isSelected={rectLayer.isEditorMode} />
+            </ToolButton>
         </>
     );
 });
@@ -83,12 +83,12 @@ export const RectTool = observer(() => {
 export const CircleTool = observer(() => {
     return (
         <>
-            <ControlButton onClick={() => editToolSwitch(circleLayer)}>
-                <CircleEditToolIcon size="24" isSelected={circleLayer.isEditingMode} />
-            </ControlButton>
-            <ControlButton onClick={() => editorSwitch(circleLayer)}>
-                <CircleEditorIcon size="24" isSelected={circleLayer.isEditorMode} />
-            </ControlButton>
+            <ToolButton onClick={() => editToolSwitch(circleLayer)}>
+                <CircleEditToolIcon size={iconSize} isSelected={circleLayer.isEditingMode} />
+            </ToolButton>
+            <ToolButton onClick={() => editorSwitch(circleLayer)}>
+                <CircleEditorIcon size={iconSize} isSelected={circleLayer.isEditorMode} />
+            </ToolButton>
         </>
     );
 });
@@ -96,12 +96,12 @@ export const CircleTool = observer(() => {
 export const EllipseTool = observer(() => {
     return (
         <>
-            <ControlButton onClick={() => editToolSwitch(ellipseLayer)}>
-                <EllipseEditToolIcon size="24" isSelected={ellipseLayer.isEditingMode} />
-            </ControlButton>
-            <ControlButton onClick={() => editorSwitch(ellipseLayer)}>
-                <EllipseEditorIcon size="24" isSelected={ellipseLayer.isEditorMode} />
-            </ControlButton>
+            <ToolButton onClick={() => editToolSwitch(ellipseLayer)}>
+                <EllipseEditToolIcon size={iconSize} isSelected={ellipseLayer.isEditingMode} />
+            </ToolButton>
+            <ToolButton onClick={() => editorSwitch(ellipseLayer)}>
+                <EllipseEditorIcon size={iconSize} isSelected={ellipseLayer.isEditorMode} />
+            </ToolButton>
         </>
     );
 });
@@ -121,23 +121,11 @@ export const ClearTool = () => {
     }
 
     return (
-        <ControlButton onClick={handleClick}>
+        <ToolButton onClick={handleClick}>
             {contextHolder}
-            <ClearToolIcon size="24" />
-        </ControlButton>
+            <ClearToolIcon size={iconSize} />
+        </ToolButton>
     );
 };
 
-export const ControlButton = styled.div`
-    height: 2rem;
-    width: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #fff;
-    cursor: pointer;
-    
-    &:hover {
-        background-color: #d9d9d9;
-    }
-`;
+

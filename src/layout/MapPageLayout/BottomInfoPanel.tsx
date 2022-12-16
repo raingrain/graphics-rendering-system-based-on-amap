@@ -10,7 +10,6 @@ export const BottomInfoPanel = observer(() => {
         <Panel>
             <div>zoom: {mapInfos.zoom}</div>
             <div>mouseLngLat: {mapInfos.mouseLngLat}</div>
-            <div>mapCenter: {mapInfos.centerPoint}</div>
         </Panel>
     );
 });
@@ -24,6 +23,8 @@ const Panel = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    background: linear-gradient(to right, #f0f0f0, #bfbfbf);
+    
     div {
         margin-right: 2rem;
         font-size: .5rem;

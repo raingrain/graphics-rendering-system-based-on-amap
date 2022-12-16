@@ -10,23 +10,20 @@ import styled from "styled-components";
 // 图层相关属性和方法
 import {useStore} from "../../../store";
 import {map} from "../../../layout/MapPageLayout/MapContainer";
-import {ControlButton} from "../OverlayTool";
+import {ToolButton} from "../../../layout/MapPageLayout/Sidebar";
+import {iconSize} from "../../../layout/MapPageLayout/Sidebar";
 
 
 export const GaoDeLayerTool = () => {
     return (
-        <div style={{
-            // position: "absolute",
-            // right: "1rem",
-            // top: "31vh"
-        }}>
+        <div>
             <Popover
-                placement="left"
+                placement="rightBottom"
                 content={<PopoverContent />}
                 title={<PopoverTitle />}
                 trigger="click"
             >
-                <ControlButton><GaoDeLayerToolIcon size="24" /></ControlButton>
+                <ToolButton><GaoDeLayerToolIcon size={iconSize} /></ToolButton>
             </Popover>
         </div>
     );

@@ -8,11 +8,9 @@ import {features} from "../../component/ToolSet/GaoDeFeaturesTool";
 
 import {message} from "antd";
 
-import {BottomInfoPanel} from "./BottomInfoPanel";
 import {useStore} from "../../store";
 
 import {observer} from "mobx-react-lite";
-import {Sidebar} from "./Sidebar";
 
 
 let AMap: any;
@@ -46,7 +44,7 @@ const MapContainer = observer(() => {
                 // 初始化地图缩放级别
                 zoom: mapInfos.zoom,
                 // 初始化地图中心点位置，十进制经纬度
-                center: mapInfos.centerPoint,
+                center: mapInfos.mouseLngLat,
                 // 旋转角是否可以调整
                 rotateEnable: true,
                 // 旋转角角度
@@ -103,7 +101,7 @@ const MapContainer = observer(() => {
             {/*地图容器，需要一个ID*/}
             <div id="container" style={{
                 position: "absolute",
-                inset: "3rem 0 1.5rem 2rem"
+                inset: "3rem 0 1.5rem 3rem"
             }}></div>
         </>
     );

@@ -11,7 +11,9 @@ import {ChangeEvent} from "react";
 import {map} from "../../../layout/MapPageLayout/MapContainer";
 // 要素类类型
 import {Feature} from "./types";
-import {ControlButton} from "../OverlayTool";
+
+import {ToolButton} from "../../../layout/MapPageLayout/Sidebar";
+import {iconSize} from "../../../layout/MapPageLayout/Sidebar";
 
 // 地图要素及其对应的中文名
 export const features: Feature[] = [
@@ -39,18 +41,14 @@ export const features: Feature[] = [
 
 export const GaoDeFeaturesTool = () => {
     return (
-        <div style={{
-            // position: "absolute",
-            // right: "1rem",
-            // top: "25vh"
-        }}>
+        <div>
             <Popover
-                placement="left"
+                placement="rightBottom"
                 content={<PopoverContent />}
                 title={<PopoverTitle />}
                 trigger="click"
             >
-                <ControlButton><GaoDeFeaturesToolIcon size="24" /></ControlButton>
+                <ToolButton><GaoDeFeaturesToolIcon size={iconSize} /></ToolButton>
             </Popover>
         </div>
     );

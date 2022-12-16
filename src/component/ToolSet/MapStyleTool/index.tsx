@@ -35,7 +35,9 @@ import blue from "../../../assets/mapStyleImage/blue.png";
 // @ts-ignore
 import darkblue from "../../../assets/mapStyleImage/darkblue.png";
 import {useStore} from "../../../store";
-import {ControlButton} from "../OverlayTool";
+
+import {ToolButton} from "../../../layout/MapPageLayout/Sidebar";
+import {iconSize} from "../../../layout/MapPageLayout/Sidebar";
 
 
 // 样式数据
@@ -102,20 +104,15 @@ const styles: Style[] = [
 
 // 地图样式选择器
 export const MapStyleTool = () => {
-
     return (
-        <div style={{
-        // position: "absolute",
-        //     right: "1rem",
-        //     top: "37vh"
-    }}>
+        <div>
             <Popover
-                placement="left"
+                placement="rightBottom"
                 content={<PopoverContent />}
                 title={<PopoverTitle />}
                 trigger="click"
             >
-                <ControlButton><MapStyleToolIcon size="24" /></ControlButton>
+                <ToolButton><MapStyleToolIcon size={iconSize} /></ToolButton>
             </Popover>
         </div>
     );
