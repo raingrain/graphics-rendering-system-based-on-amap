@@ -29,5 +29,4 @@ const Panel = styled.div`
         margin-right: 2rem;
         font-size: .5rem;
     }
-`
-
+`;

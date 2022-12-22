@@ -81,19 +81,19 @@ class PointLayer implements Layer {
         map.on("click", this.createDefault);
         polylineLayer.polylines.forEach((polyline) => {
             polyline.on("click", this.createDefault);
-        })
+        });
         polygonLayer.polygons.forEach((polygon) => {
             polygon.on("click", this.createDefault);
-        })
+        });
         rectLayer.rects.forEach((rect) => {
             rect.on("click", this.createDefault);
-        })
+        });
         circleLayer.circles.forEach((circle) => {
             circle.on("click", this.createDefault);
-        })
+        });
         ellipseLayer.ellipses.forEach((ellipse) => {
             ellipse.on("click", this.createDefault);
-        })
+        });
     }
 
     forbidMapSomethingWhenStopEditing() {
@@ -101,19 +101,19 @@ class PointLayer implements Layer {
         map.off("click", this.createDefault);
         polylineLayer.polylines.forEach((polyline) => {
             polyline.off("click", this.createDefault);
-        })
+        });
         polygonLayer.polygons.forEach((polygon) => {
             polygon.off("click", this.createDefault);
-        })
+        });
         rectLayer.rects.forEach((rect) => {
             rect.off("click", this.createDefault);
-        })
+        });
         circleLayer.circles.forEach((circle) => {
             circle.off("click", this.createDefault);
-        })
+        });
         ellipseLayer.ellipses.forEach((ellipse) => {
             ellipse.off("click", this.createDefault);
-        })
+        });
     }
 
     allowSomethingWhenStartEditing() {

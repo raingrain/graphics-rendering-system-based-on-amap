@@ -127,5 +127,3 @@ export const ClearTool = () => {
         </ToolButton>
     );
 };
-
-

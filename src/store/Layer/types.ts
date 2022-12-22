@@ -24,4 +24,3 @@ export interface Layer {
     // 删除当前图层内的全部矢量图形
     removeAll(): boolean;
 }
-

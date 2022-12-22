@@ -35,7 +35,7 @@ class RectLayer implements Layer {
             });
             rect.setExtData({
                 editor: new AMap.RectangleEditor(map, rect)
-            })
+            });
             this.allowDefaultSomethingWhenStartEditing(rect);
             this.rects.push(rect);
             map.add(rect);
@@ -58,7 +58,7 @@ class RectLayer implements Layer {
             // 删除定点可以取消创建
             point.on("rightclick", this.removePointsOfEditing);
             point.on("rightclick", this.removeToMouse);
-            this.pointsOfEditing.push(point)
+            this.pointsOfEditing.push(point);
             map.add(point);
         }
         // 不像多边形的线的点数是不确定的，两点可以确定一个矩形
@@ -98,7 +98,7 @@ class RectLayer implements Layer {
                 fillColor: "orange",
                 zIndex: 60
             });
-            this.toMouse!.on("mousemove", this.createToMouse)
+            this.toMouse!.on("mousemove", this.createToMouse);
             this.toMouse!.on("click", this.createPointOfEditing);
             // 只创建定点时右键直接删除
             this.toMouse!.on("rightclick", this.removePointsOfEditing);
@@ -133,31 +133,31 @@ class RectLayer implements Layer {
             point.on("mousemove", this.createToMouse);
             point.on("rightclick", this.removePointsOfEditing);
             point.on("rightclick", this.removeToMouse);
-        })
+        });
         polylineLayer.polylines.forEach((polyline) => {
             polyline.on("click", this.createPointOfEditing);
             polyline.on("mousemove", this.createToMouse);
             polyline.on("rightclick", this.removePointsOfEditing);
             polyline.on("rightclick", this.removeToMouse);
-        })
+        });
         polygonLayer.polygons.forEach((polygon) => {
             polygon.on("click", this.createPointOfEditing);
             polygon.on("mousemove", this.createToMouse);
             polygon.on("rightclick", this.removePointsOfEditing);
             polygon.on("rightclick", this.removeToMouse);
-        })
+        });
         circleLayer.circles.forEach((circle) => {
             circle.on("click", this.createPointOfEditing);
             circle.on("mousemove", this.createToMouse);
             circle.on("rightclick", this.removePointsOfEditing);
             circle.on("rightclick", this.removeToMouse);
-        })
+        });
         ellipseLayer.ellipses.forEach((ellipse) => {
             ellipse.on("click", this.createPointOfEditing);
             ellipse.on("mousemove", this.createToMouse);
             ellipse.on("rightclick", this.removePointsOfEditing);
             ellipse.on("rightclick", this.removeToMouse);
-        })
+        });
     }
 
     forbidMapSomethingWhenStopEditing() {
@@ -171,31 +171,31 @@ class RectLayer implements Layer {
             point.off("mousemove", this.createToMouse);
             point.off("rightclick", this.removePointsOfEditing);
             point.off("rightclick", this.removeToMouse);
-        })
+        });
         polylineLayer.polylines.forEach((polyline) => {
             polyline.off("click", this.createPointOfEditing);
             polyline.off("mousemove", this.createToMouse);
             polyline.off("rightclick", this.removePointsOfEditing);
             polyline.off("rightclick", this.removeToMouse);
-        })
+        });
         polygonLayer.polygons.forEach((polygon) => {
             polygon.off("click", this.createPointOfEditing);
             polygon.off("mousemove", this.createToMouse);
             polygon.off("rightclick", this.removePointsOfEditing);
             polygon.off("rightclick", this.removeToMouse);
-        })
+        });
         circleLayer.circles.forEach((circle) => {
             circle.off("click", this.createPointOfEditing);
             circle.off("mousemove", this.createToMouse);
             circle.off("rightclick", this.removePointsOfEditing);
             circle.off("rightclick", this.removeToMouse);
-        })
+        });
         ellipseLayer.ellipses.forEach((ellipse) => {
             ellipse.off("click", this.createPointOfEditing);
             ellipse.off("mousemove", this.createToMouse);
             ellipse.off("rightclick", this.removePointsOfEditing);
             ellipse.off("rightclick", this.removeToMouse);
-        })
+        });
     }
 
     allowSomethingWhenStartEditing() {
@@ -214,13 +214,13 @@ class RectLayer implements Layer {
             this.isEditorMode = false;
         }
         this.isEditingMode = true;
-        this.allowSomethingWhenStartEditing()
+        this.allowSomethingWhenStartEditing();
     }
 
     stopEditing() {
         this.isEditingMode = false;
         this.createDefault();
-        this.forbidSomethingWhenStopEditing()
+        this.forbidSomethingWhenStopEditing();
     }
 
     allowMapSomethingWhenOpenEditors() {

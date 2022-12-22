@@ -14,7 +14,9 @@ export function Navbar() {
             <div className="col-start-2 col-end-3 mx-auto grid grid-rows-2">
                 {/*上下再分成两行*/}
                 <div className="flex justify-center items-center">
-                    <AMapIcon size={iconSize} />&nbsp;+&nbsp;<ViteIcon size={iconSize}/>&nbsp;+&nbsp;<ReactIcon size={iconSize} />&nbsp;+&nbsp;<TSIcon size={iconSize} />&nbsp;+&nbsp;<MobxIcon size={iconSize} />&nbsp;+&nbsp;<AntDIcon size={iconSize}/>
+                    <AMapIcon size={iconSize} />&nbsp;+&nbsp;<ViteIcon size={iconSize} />&nbsp;+&nbsp;
+                    <ReactIcon size={iconSize} />&nbsp;+&nbsp;<TSIcon size={iconSize} />&nbsp;+&nbsp;
+                    <MobxIcon size={iconSize} />&nbsp;+&nbsp;<AntDIcon size={iconSize} />
                 </div>
                 <p className="text-base font-bold text-center">RainGrain-Map</p>
             </div>

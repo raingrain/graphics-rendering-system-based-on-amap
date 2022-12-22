@@ -31,12 +31,12 @@ class MapInfos {
     }
 
     removeAll() {
-        const ans1 = pointLayer.removeAll()
-        const ans2 = polylineLayer.removeAll()
-        const ans3 = polygonLayer.removeAll()
-        const ans4 = rectLayer.removeAll()
-        const ans5 = circleLayer.removeAll()
-        const ans6 = ellipseLayer.removeAll()
+        const ans1 = pointLayer.removeAll();
+        const ans2 = polylineLayer.removeAll();
+        const ans3 = polygonLayer.removeAll();
+        const ans4 = rectLayer.removeAll();
+        const ans5 = circleLayer.removeAll();
+        const ans6 = ellipseLayer.removeAll();
         return ans1 || ans2 || ans3 || ans4 || ans5 || ans6;
         // return !(!pointLayer.removeAll() && !polylineLayer.removeAll() && !polygonLayer.removeAll() && !rectLayer.removeAll() && !circleLayer.removeAll() && !ellipseLayer.removeAll());
     }

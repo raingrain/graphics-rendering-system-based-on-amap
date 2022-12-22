@@ -146,27 +146,27 @@ class PolygonLayer implements Layer {
             point.on("click", this.createPointOfEditing);
             point.on("mousemove", this.createToMouse);
             point.on("rightclick", this.createDefault);
-        })
+        });
         polylineLayer.polylines.forEach((polyline) => {
             polyline.on("click", this.createPointOfEditing);
             polyline.on("mousemove", this.createToMouse);
             polyline.on("rightclick", this.createDefault);
-        })
+        });
         rectLayer.rects.forEach((rect) => {
             rect.on("click", this.createPointOfEditing);
             rect.on("mousemove", this.createToMouse);
             rect.on("rightclick", this.createDefault);
-        })
+        });
         circleLayer.circles.forEach((circle) => {
             circle.on("click", this.createPointOfEditing);
             circle.on("mousemove", this.createToMouse);
             circle.on("rightclick", this.createDefault);
-        })
+        });
         ellipseLayer.ellipses.forEach((ellipse) => {
             ellipse.on("click", this.createPointOfEditing);
             ellipse.on("mousemove", this.createToMouse);
             ellipse.on("rightclick", this.createDefault);
-        })
+        });
     }
 
     forbidMapSomethingWhenStopEditing() {
@@ -178,27 +178,27 @@ class PolygonLayer implements Layer {
             point.off("click", this.createPointOfEditing);
             point.off("mousemove", this.createToMouse);
             point.off("rightclick", this.createDefault);
-        })
+        });
         polylineLayer.polylines.forEach((polyline) => {
             polyline.off("click", this.createPointOfEditing);
             polyline.off("mousemove", this.createToMouse);
             polyline.off("rightclick", this.createDefault);
-        })
+        });
         rectLayer.rects.forEach((rect) => {
             rect.off("click", this.createPointOfEditing);
             rect.off("mousemove", this.createToMouse);
             rect.off("rightclick", this.createDefault);
-        })
+        });
         circleLayer.circles.forEach((circle) => {
             circle.off("click", this.createPointOfEditing);
             circle.off("mousemove", this.createToMouse);
             circle.off("rightclick", this.createDefault);
-        })
+        });
         ellipseLayer.ellipses.forEach((ellipse) => {
             ellipse.off("click", this.createPointOfEditing);
             ellipse.off("mousemove", this.createToMouse);
             ellipse.off("rightclick", this.createDefault);
-        })
+        });
     }
 
     allowSomethingWhenStartEditing() {

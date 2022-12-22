@@ -6,15 +6,15 @@ import {BottomInfoPanel} from "../layouts/MapPageLayout/BottomInfoPanel";
 
 export const MapPage = observer(() => {
     return (
-            <div style={{
-                position: "relative",
-                width: "100vw",
-                height: "100vh"
-            }}>
-                <Navbar />
-                <Sidebar/>
-                <MapContainer />
-                <BottomInfoPanel />
-            </div>
+        <div style={{
+            position: "relative",
+            width: "100vw",
+            height: "100vh"
+        }}>
+            <Navbar />
+            <Sidebar />
+            <MapContainer />
+            <BottomInfoPanel />
+        </div>
     );
 });

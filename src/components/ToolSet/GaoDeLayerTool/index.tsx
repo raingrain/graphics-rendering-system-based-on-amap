@@ -10,8 +10,7 @@ import styled from "styled-components";
 // 图层相关属性和方法
 import {useStore} from "../../../store";
 import {map} from "../../../layouts/MapPageLayout/MapContainer";
-import {ToolButton} from "../../../layouts/MapPageLayout/Sidebar";
-import {iconSize} from "../../../layouts/MapPageLayout/Sidebar";
+import {iconSize, ToolButton} from "../../../layouts/MapPageLayout/Sidebar";
 
 
 export const GaoDeLayerTool = () => {
