@@ -21,7 +21,7 @@ import {rectLayer} from "../../store/Layer/RectLayer";
 import {circleLayer} from "../../store/Layer/CircleLayer";
 import {ellipseLayer} from "../../store/Layer/EllipseLayer";
 import {message} from "antd";
-import {iconSize, ToolButton} from "../../layout/MapPageLayout/Sidebar";
+import {iconSize, ToolButton} from "../../layouts/MapPageLayout/Sidebar";
 
 function editToolSwitch(layer: any) {
     !layer.isEditingMode && mapInfos.closeAllLayers();

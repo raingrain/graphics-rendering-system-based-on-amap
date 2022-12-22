@@ -6,8 +6,4 @@ export const router = createBrowserRouter([
         path: "/",
         element: <MapPage />
     }
-    // {
-    //     path: '/map',
-    //     element: <Map/>
-    // }
 ]);

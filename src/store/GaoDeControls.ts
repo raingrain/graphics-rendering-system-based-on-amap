@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {AMap, map} from "../layout/MapPageLayout/MapContainer";
+import {AMap, map} from "../layouts/MapPageLayout/MapContainer";
 
 // 控件类型，初始化为null
 type ControlType = AMap.Control | null;

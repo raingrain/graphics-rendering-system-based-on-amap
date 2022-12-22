@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {AMap, map} from "../../layout/MapPageLayout/MapContainer";
+import {AMap, map} from "../../layouts/MapPageLayout/MapContainer";
 import {mapInfos} from "../MapInfos";
 import {Layer} from "./types";
 import {polylineLayer} from "./PolylineLayer";

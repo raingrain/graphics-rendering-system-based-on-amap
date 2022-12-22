@@ -1,5 +1,5 @@
 import {GithubOutlined} from "@ant-design/icons";
-import {AMapIcon, ReactIcon, TSIcon} from "../../assets/Icon";
+import {AMapIcon, AntDIcon, MobxIcon, ReactIcon, TSIcon, ViteIcon} from "../../assets/Icon";
 import {iconSize} from "./Sidebar";
 
 export function Navbar() {
@@ -14,9 +14,9 @@ export function Navbar() {
             <div className="col-start-2 col-end-3 mx-auto grid grid-rows-2">
                 {/*上下再分成两行*/}
                 <div className="flex justify-center items-center">
-                    <AMapIcon size={iconSize} />&nbsp;+&nbsp;<ReactIcon size={"16"} />&nbsp;+&nbsp;<TSIcon size={"16"} />
+                    <AMapIcon size={iconSize} />&nbsp;+&nbsp;<ViteIcon size={iconSize}/>&nbsp;+&nbsp;<ReactIcon size={iconSize} />&nbsp;+&nbsp;<TSIcon size={iconSize} />&nbsp;+&nbsp;<MobxIcon size={iconSize} />&nbsp;+&nbsp;<AntDIcon size={iconSize}/>
                 </div>
-                <p className="text-base font-bold">GrainRain-Map</p>
+                <p className="text-base font-bold text-center">RainGrain-Map</p>
             </div>
             <a className="flex items-center mr-4 ml-auto" href="https://github.com/raingrain/mini-amap-react-ts" target="_blank">
                 {/*github图标*/}

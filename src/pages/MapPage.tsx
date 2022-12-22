@@ -1,8 +1,8 @@
-import {Navbar} from "../layout/MapPageLayout/Navbar";
-import {MapContainer} from "../layout/MapPageLayout/MapContainer";
+import {Navbar} from "../layouts/MapPageLayout/Navbar";
+import {MapContainer} from "../layouts/MapPageLayout/MapContainer";
 import {observer} from "mobx-react-lite";
-import {Sidebar} from "../layout/MapPageLayout/Sidebar";
-import {BottomInfoPanel} from "../layout/MapPageLayout/BottomInfoPanel";
+import {Sidebar} from "../layouts/MapPageLayout/Sidebar";
+import {BottomInfoPanel} from "../layouts/MapPageLayout/BottomInfoPanel";
 
 export const MapPage = observer(() => {
     return (

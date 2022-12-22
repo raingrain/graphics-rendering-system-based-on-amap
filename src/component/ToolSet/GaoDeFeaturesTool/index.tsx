@@ -8,12 +8,12 @@ import styled from "styled-components";
 import {ChangeEvent} from "react";
 
 // 地图实例
-import {map} from "../../../layout/MapPageLayout/MapContainer";
+import {map} from "../../../layouts/MapPageLayout/MapContainer";
 // 要素类类型
 import {Feature} from "./types";
 
-import {ToolButton} from "../../../layout/MapPageLayout/Sidebar";
-import {iconSize} from "../../../layout/MapPageLayout/Sidebar";
+import {ToolButton} from "../../../layouts/MapPageLayout/Sidebar";
+import {iconSize} from "../../../layouts/MapPageLayout/Sidebar";
 
 // 地图要素及其对应的中文名
 export const features: Feature[] = [

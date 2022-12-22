@@ -1,5 +1,5 @@
 // 地图实例
-import {map} from "../../../layout/MapPageLayout/MapContainer";
+import {map} from "../../../layouts/MapPageLayout/MapContainer";
 // 鹰眼控件设置函数
 
 // 样式按钮图标
@@ -36,8 +36,8 @@ import blue from "../../../assets/mapStyleImage/blue.png";
 import darkblue from "../../../assets/mapStyleImage/darkblue.png";
 import {useStore} from "../../../store";
 
-import {ToolButton} from "../../../layout/MapPageLayout/Sidebar";
-import {iconSize} from "../../../layout/MapPageLayout/Sidebar";
+import {ToolButton} from "../../../layouts/MapPageLayout/Sidebar";
+import {iconSize} from "../../../layouts/MapPageLayout/Sidebar";
 
 
 // 样式数据
