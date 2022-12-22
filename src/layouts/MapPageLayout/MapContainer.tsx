@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import "@amap/amap-jsapi-types";
 
-import {features} from "../../component/ToolSet/GaoDeFeaturesTool";
+import {features} from "../../components/ToolSet/GaoDeFeaturesTool";
 
 
 import {message} from "antd";

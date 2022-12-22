@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import {GaoDeFeaturesTool} from "../../component/ToolSet/GaoDeFeaturesTool";
-import {GaoDeLayerTool} from "../../component/ToolSet/GaoDeLayerTool";
-import {MapStyleTool} from "../../component/ToolSet/MapStyleTool";
+import {GaoDeFeaturesTool} from "../../components/ToolSet/GaoDeFeaturesTool";
+import {GaoDeLayerTool} from "../../components/ToolSet/GaoDeLayerTool";
+import {MapStyleTool} from "../../components/ToolSet/MapStyleTool";
 import {
     CircleTool,
     ClearTool,
@@ -11,7 +11,7 @@ import {
     PolygonTool,
     PolylineTool,
     RectTool
-} from "../../component/ToolSet/OverlayTool";
+} from "../../components/ToolSet/OverlayTool";
 
 export const iconSize = "16";
 
