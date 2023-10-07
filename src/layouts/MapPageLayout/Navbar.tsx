@@ -18,7 +18,7 @@ export function Navbar() {
                     <ReactIcon size={iconSize} />&nbsp;+&nbsp;<TSIcon size={iconSize} />&nbsp;+&nbsp;
                     <MobxIcon size={iconSize} />&nbsp;+&nbsp;<AntDIcon size={iconSize} />
                 </div>
-                <p className="text-base font-bold text-center">RainGrain-Map</p>
+                <p className="text-base font-bold text-center">Graphics-Rendering-System-Based-on-AMap</p>
             </div>
             <a className="flex items-center mr-4 ml-auto" href="https://github.com/raingrain/mini-amap-react-ts" target="_blank">
                 {/*github图标*/}
